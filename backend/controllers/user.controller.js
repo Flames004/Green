@@ -5,24 +5,23 @@ import otpGenerator from "otp-generator";
 import UserOtp from "../models/userOtp.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
-import User from '../models/user.model.js'
+import User from "../models/user.model.js";
+import jwt from 'jsonwebtoken';
 
+const generateAccessAndRefreshToken = async (user_id) => {
+  try {
+    const user = await User.findById(user_id);
 
-const generateAccessAndRefreshToken = async(user_id) =>{
-    try {
+    const accessToken = await user.generateAccessToken();
+    const refreshToken = await user.generateRefreshToken();
 
-        const user = await User.findById(user_id);
-
-        const accessToken = await user.generateAccessToken();
-        const refreshToken = await user.generateRefreshToken();
-
-        user.refreshToken = refreshToken;
-        await user.save();
-        return {accessToken, refreshToken};
-    } catch (error) {
-         throw new ApiError(500, "Error occured while generating the tokens")
-    }
-}
+    user.refreshToken = refreshToken;
+    await user.save();
+    return { accessToken, refreshToken };
+  } catch (error) {
+    throw new ApiError(500, "Error occured while generating the tokens");
+  }
+};
 
 const registerUser = asyncHandler(async (req, res) => {
   const { phone } = req.body;
@@ -62,65 +61,130 @@ const registerUser = asyncHandler(async (req, res) => {
     { upsert: true, new: true }
   );
 
-  return res.status(201).json(new ApiResponse(
-    201,
-    "Otp sent Successfully!",
-    true,
-));
-
+  return res
+    .status(201)
+    .json(new ApiResponse(201, "Otp sent Successfully!", true));
 });
 
-const verifyOtp = asyncHandler( async (req,res) =>{
+const verifyOtp = asyncHandler(async (req, res) => {
+  const { phone, otp } = req.body;
+  if (!phone || !otp) {
+    throw new ApiError(401, "All fields are required!");
+  }
 
-    const {phone, otp} = req.body;
-    if(!phone || !otp){
-        throw new ApiError(401, "All fields are required!");
-    }
+  const record = await UserOtp.findOne({ phone });
+  if (!record) {
+    throw new ApiError(401, "Otp is expired or not found");
+  }
 
-    const record = await UserOtp.findOne({phone});
-    if(!record){
-        throw new ApiError(401, "Otp is expired or not found")
-    }
+  if (record.otp !== otp) {
+    throw new ApiError(400, "Invalid otp");
+  }
 
-    if(record.otp !== otp){
-        throw new ApiError(400, "Invalid otp");
-    }
+  await UserOtp.deleteMany({ phone });
 
-    await UserOtp.deleteMany({phone});
+  let user = await User.findOne({ phone });
+  if (!user) {
+    user = await User.create({ phone });
+  }
 
-    let user = await User.findOne({phone});
-    if(!user){
-        user =  await User.create({phone})
-    }
+  const { refreshToken, accessToken } = await generateAccessAndRefreshToken(
+    user._id
+  );
 
-    const {refreshToken, accessToken} = await generateAccessAndRefreshToken(user._id);
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
 
-    const options = {
-        httpOnly:true,
-        secure:true,
-    }
-
-    return res
+  return res
     .status(200)
     .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
     .json(
-      new ApiResponse(
-        200,
-        "Login Successfully",
-        true,
-        {
-          user,
-          accessToken,
-        },
-      )
+      new ApiResponse(200, "Login Successfully", true, {
+        user,
+        accessToken,
+      })
     );
-    
+});
+
+const getUserProfile = asyncHandler(async (req, res) => {
+  await res
+    .status(200)
+    .json(new ApiResponse(200, "user fetched successfully", true, req.user));
+});
+
+const logoutUser = asyncHandler(async (req, res) => {
+  if (!req.user._id) {
+    throw new ApiError(401, "Invalid user");
+  }
+
+  await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $set: { refreshToken: null },
+    },
+    { new: true }
+  );
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+
+  return res
+    .status(200)
+    .clearCookie("accessToken",  options)
+    .clearCookie("refreshToken", options)
+    .json(new ApiResponse(200, "logout successfully", true, {}));
 
 });
 
-const getUserProfile = asyncHandler( (req,res) => {
-    
-})
+const regenrateAccessToken = asyncHandler( async(req,res) => {
 
-export { registerUser , verifyOtp};
+  const incomingRefreshToken = req.cookies?.refreshToken;
+  if(!incomingRefreshToken){
+    throw new ApiError(401, "Refresh Token not found");
+  }
+  
+  const decodedToken = await jwt.verify(incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET);
+
+  const user = await User.findById(decodedToken._id).select("refreshToken");
+  if(!user){
+    throw new ApiError(401, "User not found");
+  }
+
+  if(incomingRefreshToken !== user.refreshToken){
+    throw new ApiError(401, "Invalid refresh token");
+  }
+
+  const {accessToken, refreshToken} = await generateAccessAndRefreshToken(user._id);
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+  }
+
+  return res
+  .status(200)
+  .cookie("accessToken" , accessToken, options)
+  .cookie("refreshToken" , refreshToken, options)
+  .json(
+    new ApiResponse(
+      200,
+      "token generate successfully",
+      true,
+      {accessToken}
+    )
+  )
+
+});
+
+export { 
+  registerUser, 
+  verifyOtp, 
+  getUserProfile , 
+  logoutUser, 
+  regenrateAccessToken
+};
