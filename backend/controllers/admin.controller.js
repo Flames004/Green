@@ -150,6 +150,10 @@ const addPhoto = asyncHandler( async (req, res) =>{
       
 });
 
+const getAllPlants = asyncHandler( async(req,res) =>{
+
+    
+})
 
 export {
     adminLogin,

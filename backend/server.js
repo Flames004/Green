@@ -4,6 +4,9 @@ import connectDb from "./db/connectDb.js";
 import userRoutes from './routes/user.routes.js'
 import cookieParser from "cookie-parser";
 import adminRoutes from "./routes/admin.routes.js"
+import plantRoutes from "./routes/plant.routes.js"
+
+
 
 const app = express();
 
@@ -18,6 +21,7 @@ app.use(cookieParser());
 // routes
 app.use('/api/v1/auth' , userRoutes);
 app.use('/api/v1/auth/admin', adminRoutes);
+app.use('/api/v1/admin', plantRoutes);
 
 app.listen(port, () =>{
     console.log(`server is listening on port: ${port}`);

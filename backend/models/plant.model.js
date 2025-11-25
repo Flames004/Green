@@ -38,7 +38,11 @@ const plantSchema = new mongoose.Schema({
     },
     height:{
         type: Number,
-        required: true
+    },
+    size:{
+        type: String,
+        enum:["small", "medium", "large", "Extra Large"],
+        default:"small"
     },
     available:{
         type: Boolean,
