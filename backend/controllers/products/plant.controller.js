@@ -5,55 +5,43 @@ import Plant from '../../models/plant.model.js';
 import { ApiResponse } from '../../utils/ApiResponse.js';
 
 
-const addPlant = asyncHandler( async(req, res) =>{
-    const {name, category, price, description, stock} = req.body;
 
-    if(!name || !category || !price || !description || !stock ){
-        throw new ApiError(400, "All fields are required")
+
+const getAllPlants = asyncHandler( async(req,res) =>{
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const pipeline = [
+        { $match: {available: true}},
+        { $sort: {createdAt: -1}}
+    ]
+
+    const options = {
+        page,
+        limit
     }
 
-
-    if (!req.files || !req.files.images || req.files.images.length === 0) {
-        throw new ApiError(400, "Images are required");
-    }
-
-
-    const uploadResults = await uploadImages(req.files.images);
-    const imageUrls = uploadResults.map((image) => image.url);
-
-    const thumbUrl = imageUrls[0];
-
-    const plant = await Plant.create({
-        name,
-        category,
-        price,
-        description,
-        stock,
-        thumbnail: thumbUrl,
-        images:imageUrls
-    });
+    const result = await Plant.aggregatePaginate(pipeline, options);
 
     return res
     .status(200)
     .json(
         new ApiResponse(
             200,
-            "Plant Added successfully",
+            "All plants fetched successfully",
             true,
-            plant
+            result
         )
-    );
-
+    )
+    
 });
 
-const getAllPlants = asyncHandler( async(req,res) =>{
 
-    const plants = await Plant.find({})
-});
 
 
 
 
 export {
-    addPlant
+    getAllPlants,
 }

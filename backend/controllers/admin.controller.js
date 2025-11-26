@@ -1,89 +1,13 @@
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { imagekit } from "../config.js/imageKit.js";
+import bcrypt from 'bcrypt'
 import User from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import asyncHandler from "../utils/asyncHandler.js";
-import bcrypt from 'bcrypt'
-import { generateAccessAndRefreshToken } from "./user.controller.js";
-import { ApiResponse } from "../utils/ApiResponse.js";
-import { imagekit } from "../config.js/imageKit.js";
+import Plant from "../models/plant.model.js";
+import mongoose from "mongoose";
 
 
-
-const adminLogin = asyncHandler( async(req,res) =>{
-
-    const { email, password } = req.body;
-    if(!email || !password){
-        throw new ApiError(404, "All fields are required");
-    }
-
-    const user = await User.findOne({email}).select("password");
-    if(!user){
-        throw new ApiError(401, "Invalid crediential");
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if(!isMatch){
-        throw new ApiError(401, "Invalid Password");
-    }
-
-    const { refreshToken, accessToken } = await generateAccessAndRefreshToken(user._id);
-
-    const loggedInUser = await User.findById(user._id);
-
-    const options = {
-        httpOnly: true,
-        secure: true,
-    }
-
-    return res
-    .status(200)
-    .cookie("accessToken", accessToken, options)
-    .cookie("refreshToken" , refreshToken, options)
-    .json(
-        new ApiResponse(
-            200,
-            "Admin Login Successfully",
-            true,
-            loggedInUser,
-        )
-    );
-
-});
-
-const getAdminProfile = asyncHandler(async(req,res) =>{
-
-   return res
-   .status(200)
-   .json(
-    new ApiResponse(
-        200,
-        "Profile fetched",
-        "true",
-        req.user,
-    )
-   );
-});
-
-const adminLogout = asyncHandler(async (req, res) => {
-
-  await User.findByIdAndUpdate(
-    req.user._id,
-    {
-      $set: { refreshToken: null },
-    },
-    { new: true }
-  );
-
-  const options = {
-    httpOnly: true,
-    secure: true,
-  };
-
-  return res
-    .status(200)
-    .clearCookie("accessToken", options)
-    .clearCookie("refreshToken", options)
-    .json(new ApiResponse(200, "logout successfully", true, {}));
-});
 
 const changePassword = asyncHandler( async(req,res) =>{
 
@@ -150,15 +74,155 @@ const addPhoto = asyncHandler( async (req, res) =>{
       
 });
 
-const getAllPlants = asyncHandler( async(req,res) =>{
+const addPlant = asyncHandler( async(req, res) =>{
+    const {name, category, price, description, stock} = req.body;
 
+    if(!name || !category || !price || !description || !stock ){
+        throw new ApiError(400, "All fields are required")
+    }
+
+
+    if (!req.files || !req.files.images || req.files.images.length === 0) {
+        throw new ApiError(400, "Images are required");
+    }
+
+
+    const uploadResults = await uploadImages(req.files.images);
+    const imageUrls = uploadResults.map((image) => image.url);
+
+    const thumbUrl = imageUrls[0];
+
+    const plant = await Plant.create({
+        name,
+        category,
+        price,
+        description,
+        stock,
+        thumbnail: thumbUrl,
+        images:imageUrls
+    });
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(
+            200,
+            "Plant Added successfully",
+            true,
+            plant
+        )
+    );
+
+});
+
+const toggleAvailable = asyncHandler( async(req,res) =>{
+
+    const { id } = req.params;
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        throw new ApiError(400, "Invalid Id");
+    }
+
+    const plant = await Plant.findByIdAndUpdate(
+        id,
+        [{ $set: { available: { $not: "$available" }}}],
+        { new: true}
+    );
+
+    if(!plant){
+        throw new ApiError(404, "No Plant Found");
+    }
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(
+            200,
+            "Plant availability changed",
+            true,
+            plant
+        )
+    );
+
+});
+
+const toggleFeatured = asyncHandler( async(req,res) =>{
+
+    const { id } = req.params;
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        throw new ApiError(400, "Invalid Id");
+    }
+
+    const plant = await Plant.findByIdAndUpdate(
+        id,
+        [{ $set: { isFeatured: { $not: "$isFeatured" }}}],
+        { new: true}
+    );
+
+    if(!plant){
+        throw new ApiError(404, "No Plant Found");
+    }
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(
+            200,
+            "Plant availability changed",
+            true,
+            plant
+        )
+    );
+
+});
+
+const updatePlantDetail = asyncHandler( async( req,res) =>{
     
-})
+    const {id} = req.params;
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        throw new ApiError(404, "Invalid Id");
+    }
+
+    const {name, category, price, description, stock,size} = req.body;
+    if(!name || !category || !price || !description || !stock ){
+        throw new ApiError(400, "All fields are required")
+    }
+
+    const existedPlant = await Plant.findByIdAndUpdate(
+        id,
+        {
+            name,
+            category,
+            price,
+            description,
+            stock,
+            size
+        },
+        {new: true, runValidators: true}
+    );
+
+    if(!existedPlant){
+        throw new ApiError(404, "No Plant Found")
+    }
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(
+            200,
+            "Plant Updated Successfully",
+            true,
+            existedPlant
+        )
+    );
+
+});
 
 export {
-    adminLogin,
-    adminLogout,
-    getAdminProfile,
     changePassword,
-    addPhoto
+    addPhoto,
+    addPlant,
+    toggleAvailable,
+    toggleFeatured,
+    updatePlantDetail
+
 }

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import aggregatePaginate from 'mongoose-aggregate-paginate-v2';
 
 const plantSchema = new mongoose.Schema({
     name:{
@@ -63,6 +64,8 @@ const plantSchema = new mongoose.Schema({
         default: true
     }
 },{timestamps: true});
+
+plantSchema.plugin(aggregatePaginate);
 
 
 const Plant = mongoose.model("Plant", plantSchema);
