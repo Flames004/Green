@@ -1,6 +1,5 @@
 import asyncHandler from '../../utils/asyncHandler.js'
 import {ApiError} from '../../utils/ApiError.js'
-import uploadImages from '../../services/uploads.service.js';
 import Plant from '../../models/plant.model.js';
 import { ApiResponse } from '../../utils/ApiResponse.js';
 
@@ -36,8 +35,6 @@ const getAllPlants = asyncHandler( async(req,res) =>{
     )
     
 });
-
-
 
 
 
