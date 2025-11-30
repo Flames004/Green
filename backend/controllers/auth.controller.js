@@ -35,7 +35,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const authToken = process.env.TWILIO_AUTH_TOKEN;
   const client = twilio(accountSid, authToken);
 
-  const otp = otpGenerator.generate(4, {
+  const otp = otpGenerator.generate(6, {
     digits: true,
     upperCaseAlphabets: false,
     lowerCaseAlphabets: false,
