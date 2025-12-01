@@ -3,9 +3,14 @@ import API from "../api/axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/authSlice";
+
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [timer, setTimer] = useState(0);
@@ -27,7 +32,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (timer === 0) {
+    if (timer === 0){
       setResend(true);
       return;
     }
@@ -46,6 +51,7 @@ const Login = () => {
       const { data } = await API.post("/auth/verify-otp", { phone, otp });
       if (data.success) {
         toast.success("Login Successfully");
+        dispatch(setUser(data.user));
         navigate("/");
       } else {
         toast.error(data.message);
