@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { adminLogin, adminLogout, getAdminProfile, getUserProfile, logoutUser, regenrateAccessToken, registerUser, verifyOtp } from "../controllers/auth.controller.js";
+import { adminLogin, adminLogout, authCheck, getAdminProfile, getUserProfile, logoutUser, regenrateAccessToken, registerUser, verifyOtp } from "../controllers/auth.controller.js";
 import { verifyJwt } from "../middleware/auth.middleware.js";
 import adminAuth from "../middleware/admin.middleware.js";
 
@@ -17,6 +17,7 @@ router.get("/refresh-token", regenrateAccessToken);
 
 // admin
 router.post("/admin/login", adminLogin);
+router.get("/admin/auth/me" , adminAuth,authCheck);
 router.get("/admin/profile", adminAuth, getAdminProfile);
 router.get("/admin/logout", adminAuth, adminLogout);
 

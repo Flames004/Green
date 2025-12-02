@@ -230,6 +230,19 @@ const adminLogin = asyncHandler( async(req,res) =>{
 
 });
 
+const authCheck = asyncHandler( async(req,res) =>{
+    return res
+    .status(200)
+    .json(
+      new ApiResponse(
+          200,
+          "Profile fetched",
+          "true",
+          req.user,
+      )
+    );
+});
+
 const getAdminProfile = asyncHandler(async(req,res) =>{
 
    return res
@@ -275,4 +288,5 @@ export {
   regenrateAccessToken,
   getAdminProfile,
   adminLogout,
+  authCheck
 };

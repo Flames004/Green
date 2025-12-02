@@ -3,10 +3,10 @@ import Home from './pages/Home'
 import MainLayout from './layouts/MainLayout'
 import Login from './pages/Login'
 import { ToastContainer } from 'react-toastify'
-import AdminLogin from './pages/AdminLogin'
-import AdminRoutes from './components/AdminRoutes'
 import AdminLayout from './layouts/AdminLayout'
-import AdminDashboard from './pages/AdminDashboard'
+import AdminDashboard from './pages/admin/AdminDashboard'
+import AdminPlantPage from './pages/admin/AdminPlantPage'
+import AdminLogin from './pages/admin/AdminLogin'
 
 
 const App = () => {
@@ -20,16 +20,12 @@ const App = () => {
       </Route>
       <Route path='/admin/login' element={<AdminLogin/>}/>
 
-       <Route 
-          path="/admin" 
-          element={
-            <AdminRoutes>
-              <AdminLayout />
-            </AdminRoutes>
-          }
-        >
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        </Route>
+      <Route path='/admin' element={<AdminLayout/>}>
+          <Route path='/admin/dashboard' element={<AdminDashboard/>}/>
+          <Route path='/admin/plants' element={<AdminPlantPage/>}/>
+
+      </Route>
+
     </Routes>
     </>
   )

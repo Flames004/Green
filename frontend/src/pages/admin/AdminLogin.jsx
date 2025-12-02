@@ -1,10 +1,10 @@
 import { ArrowRight } from "lucide-react";
 import  { useState } from "react";
-import API from "../api/axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setUser } from "../redux/authSlice";
+import { setUser } from "../../redux/authSlice";
+import API from "../../api/axios";
 
 const AdminLogin = () => {
 
