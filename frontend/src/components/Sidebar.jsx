@@ -18,7 +18,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <aside className="lg:block hidden h-screen w-70 bg-gray-200/50  flex flex-col font-medium border-r border-gray-300">
+      <aside className="lg:block hidden h-screen  bg-gray-200/50   flex-col font-medium border-r border-gray-300">
         <div className="text-xl font-bold p-5 border-b border-gray-300">
            GreenLand
         </div>
