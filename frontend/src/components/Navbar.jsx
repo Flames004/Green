@@ -91,7 +91,7 @@ const Navbar = () => {
       </div>
 
       {isMobileMenuOpen && (
-        <div className="lg:hidden absolute top-15 left-0 w-full bg-white h-[90%]  z-50">
+        <div className="lg:hidden fixed min-h-screen top-15 left-0 w-full bg-white  z-50">
           <div className="flex flex-col py-4 text-sm font-medium text-gray-700">
             <Link
               to="/"

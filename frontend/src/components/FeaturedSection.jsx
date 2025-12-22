@@ -32,12 +32,18 @@ const products = [
     image: "/pots_collection.jpg",
     category: "Pots & Planters",
   },
+   {
+    title: "Snake Plant",
+    price: "35",
+    image: "/outdoor.jpg",
+    category: "Low Maintenance",
+  },
 ]
 
 
 const FeaturedSection = () => {
   return (
-    <div className='py-10 md:py-15 px-5 md:px-15'>
+    <div className='py-10 md:py-15 px-5 md:px-25'>
       <div className='text-center mb-10'>
         <h1 className='md:text-4xl font-medium text-2xl'>Featured Collections</h1>
         <p className='my-4 text-sm md:text-lg '>Discover our handpicked selection of vibrant plants and artisan pots</p>
@@ -47,6 +53,11 @@ const FeaturedSection = () => {
         {products.map((product,index) =>(
             <ProductCard key={index} product={product}/>
         ))}
+      </div>
+      <div className='text-center py-10 md:py-10'>
+        <button className='border-gray-400 border-2 bg-white p-4 rounded-full '>
+            View All Products
+      </button>
       </div>
     </div>
   )

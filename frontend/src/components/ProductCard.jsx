@@ -19,12 +19,12 @@ const ProductCard = ({ product }) => {
        
        <div className="flex justify-between items-center mt-2">
             <div className="p-4">
-                <h3 className="text-lg font-medium">{product.title}</h3>
+                <h3 className=" text-md lg:text-lg font-medium">{product.title}</h3>
                 <p className="text-sm text-gray-500">{product.category}</p>
                 <span className="font-semibold text-lg">₹{product.price}</span>
             </div>
             <div>
-                <button className="bg-emerald-600 text-white px-4 py-2 rounded-full mr-4 hover:bg-emerald-700 transition">Add to Cart</button>
+                <button className="bg-emerald-600 text-white px-4 py-2 rounded-full mr-4 text-sm hover:bg-emerald-700 transition">Add to Cart</button>
             </div>
        </div>
       </div>
