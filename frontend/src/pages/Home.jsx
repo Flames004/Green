@@ -1,8 +1,13 @@
 import React from 'react'
+import { ImagesSlide } from '../components/ImageSlide'
+import FeaturedSection from '../components/FeaturedSection'
 
 const Home = () => {
   return (
-    <div>Home page</div>
+    <main className='min-h-screen'>
+      <ImagesSlide/>
+      <FeaturedSection/>
+    </main>
   )
 }
 
