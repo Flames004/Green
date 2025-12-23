@@ -8,6 +8,7 @@ import AdminDashboard from './pages/admin/AdminDashboard'
 import AdminPlantPage from './pages/admin/AdminPlantPage'
 import AdminLogin from './pages/admin/AdminLogin'
 import AddPlant from './pages/admin/AddPlant'
+import Contact from './pages/Contact'
 
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
     <Routes>
       <Route element={<MainLayout/>}>
         <Route path='/' element={<Home/>}/>
+        <Route path='/contact' element={<Contact/>}/>
         <Route path='/login' element={<Login/>}/>
       </Route>
       <Route path='/admin/login' element={<AdminLogin/>}/>
