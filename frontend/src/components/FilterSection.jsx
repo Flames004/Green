@@ -1,6 +1,8 @@
 import React from 'react'
 
-const FilterSection = () => {
+const FilterSection = ({filters, setFilters, setPage}) => {
+
+
   return (
     <div className="min-h-screen">
       <div>
@@ -28,6 +30,14 @@ const FilterSection = () => {
         <div className='flex gap-3'>
             <input type="checkbox" name="" id=""  className='w-4'/>
             <label htmlFor="bonsai">Bonsai Plants</label>
+        </div>
+        <div className='flex gap-3'>
+            <input type="checkbox" name="" id=""  className='w-4'/>
+            <label htmlFor="herbal">Herbal Plants</label>
+        </div>
+        <div className='flex gap-3'>
+            <input type="checkbox" name="" id=""  className='w-4'/>
+            <label htmlFor="succulent">Succulent Plants</label>
         </div>
       </div>
       <br />

@@ -10,6 +10,7 @@ import AdminLogin from './pages/admin/AdminLogin'
 import AddPlant from './pages/admin/AddPlant'
 import Contact from './pages/Contact'
 import Plants from './pages/Plants'
+import PlantDetails from './pages/PlantDetails'
 
 
 const App = () => {
@@ -22,8 +23,8 @@ const App = () => {
         <Route path='/contact' element={<Contact/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/plants' element={<Plants/>}/>
-
-        
+        <Route path='/plants/:id' element={<PlantDetails/>}/>
+ 
       </Route>
       <Route path='/admin/login' element={<AdminLogin/>}/>
 

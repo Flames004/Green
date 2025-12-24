@@ -1,18 +1,20 @@
 import React from "react";
 import { motion } from "framer-motion";
+import {Link }from "react-router-dom"
 
 const ProductCard = ({ product }) => {
   return (
     <>
-      <div className="border border-gray-100 rounded-xl overflow-hidden shadow-sm bg-white">
+      <Link to={`/plants/${product._id}`}>
+      <div className="border border-gray-100 rounded-xl overflow-hidden shadow-sm bg-white mt-5">
         <div className="overflow-hidden">
-          <motion.img
+            <motion.img
             src={product.thumbnail.url}
             alt={product.name}
             className="w-full h-full object-cover"
             whileHover={{ scale: 1.1 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-          />
+            />
         </div>
 
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-3 p-2 md:p-4">
@@ -35,6 +37,7 @@ const ProductCard = ({ product }) => {
           </div>
         </div>
       </div>
+      </Link>
     </>
   );
 };
