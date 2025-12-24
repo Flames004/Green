@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import ProductCard from './ProductCard';
 import API from '../api/axios';
 import { toast } from "react-toastify";
+import { Loader } from './Loader';
 
 
 
@@ -10,17 +11,19 @@ const FeaturedSection = () => {
    const [plants, setPlants] = useState([]);
    const [loading, setLoading] = useState(true);
 
-   
+
    const AllPlants = async()=>{
       try {
-        const {data} = await API.get("/plants/all");
+        const {data} = await API.get("/plants/all?featured=true&available=true&limit=9");
         setPlants(data.data.docs);
         
       } catch (error) {
         toast.error("Server Error");
         console.log(error);
         
-      }  
+      } finally{
+        setLoading(false);
+      }
     }
 
   useEffect(()=>{
@@ -30,6 +33,13 @@ const FeaturedSection = () => {
   }, []) 
 
 
+   if (loading) {
+    return (
+      <div className="flex justify-center items-center py-20 ">
+        <Loader/>
+      </div>
+    );
+  }
 
   return (
     <div className='py-10 md:py-15 px-5 md:px-25'>
@@ -39,8 +49,8 @@ const FeaturedSection = () => {
       </div>
 
       <div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-        {plants.map((plant,index) =>(
-            <ProductCard key={index} product={plant}/>
+        {plants.map((plant) =>(
+            <ProductCard key={plant._id} product={plant}/>
         ))}
       </div>
       <div className='text-center py-10 md:py-10'>

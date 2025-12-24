@@ -11,8 +11,32 @@ const getAllPlants = asyncHandler( async(req,res) =>{
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
 
+    let query= {};
+
+    const { search, available, featured, category } = req.query;
+
+    if(search){
+       query.$or = [
+            { name: { $regex: search, $options: "i" } },
+            { category: { $regex: search, $options: "i" }},
+            { description: { $regex: search, $options: "i"}}
+       ]
+    }
+
+    if(available){
+        query.available = available === "true";
+    }
+
+    if(category){
+        query.category = category;
+    }
+
+    if(featured){
+        query.isFeatured = featured === "true";
+    }
+
     const pipeline = [
-        { $match: {available: true}},
+        { $match: query},
         { $sort: {createdAt: -1}}
     ]
 
