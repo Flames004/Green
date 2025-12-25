@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import StarRating from "../components/StarRating";
 import { Droplet, Sun, TreePalm } from "lucide-react";
+import ProductImagesLayout from "../components/ProductImagesLayout";
+import PlantFeatures from "../components/PlantFeatures";
 
 const images = [
   {
@@ -21,36 +23,52 @@ const images = [
   },
 ];
 
+const reviews = [
+  {
+    name: "Aarav Sharma",
+    time: "2 days ago",
+    review: "Beautiful and healthy plant. Arrived well packed and fresh.",
+    rating: 5
+  },
+  {
+    name: "Neha Verma",
+    time: "1 week ago",
+    review: "Looks great in my living room. Needs moderate watering.",
+    rating: 4
+  },
+  {
+    name: "Rohan Patel",
+    time: "3 weeks ago",
+    review: "Good quality but delivery took a little longer.",
+    rating: 4
+  },
+  {
+    name: "Simran Kaur",
+    time: "1 month ago",
+    review: "Perfect for beginners. Very easy to take care of.",
+    rating: 5
+  },
+  {
+    name: "Vikram Rao",
+    time: "2 months ago",
+    review: "Plant was smaller than expected but still healthy.",
+    rating: 3
+  }
+];
+
+
 const PlantDetails = () => {
-  const [activeImage, setActiveImage] = useState(images[0].url);
+  const [activeImage, setActiveImage] = useState(images[0]?.url);
 
   return (
-    <div className="min-h-screen">
-      <div className="flex p-10 gap-10">
-        <div className="max-w-xl ">
-          <div>
-            <img
-              src={activeImage}
-              alt=""
-              className="w-full rounded-lg duration-300"
-            />
-          </div>
-
-          <div className="grid grid-cols-4 gap-6 py-4 ">
-            {images.map((img) => (
-              <button
-                key={img.id}
-                onClick={() => setActiveImage(img.url)}
-                className={`rounded-lg border ${
-                  activeImage === img.url
-                    ? "border-emerald-500"
-                    : "border-gray-300"
-                }`}
-              >
-                <img src={img.url} alt="" className="rounded-lg cursor-pointer "/>
-              </button>
-            ))}
-          </div>
+    <div className="min-h-screen m-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 p-5 md:p-10">
+        <div className="max-w-sm md:max-w-xl">
+          <ProductImagesLayout
+            images={images}
+            activeImage={activeImage}
+            setActiveImage={setActiveImage}
+          />
         </div>
 
         <div>
@@ -64,45 +82,35 @@ const PlantDetails = () => {
             <p className="p italic">plant category</p>
 
             <div className="flex gap-2 items-center mt-5">
-              <StarRating rating={5}/>
+              <StarRating rating={5} />
               <p className="p text-sm">(126 reviews)</p>
             </div>
 
             <div className="mt-5">
               <h1 className="text-lg">
-                A bold plant with thick, glossy leaves in deep burgundy,
-                perfect for <br /> modern interiors.
+                A bold plant with thick, glossy leaves in deep burgundy, perfect
+                for <br /> modern interiors.
               </h1>
             </div>
           </div>
 
-          <hr className="mt-5 text-gray-300"/>
+          <hr className="mt-5 text-gray-300" />
 
           <div className="flex items-center justify-around mt-5">
-            <div className="flex flex-col gap-1 items-center">
-              <div className="bg-gray-200 rounded-full p-3">
-                <Sun className="text-emerald-800"/>
-              </div>
-              <h1 className="font-semibold text-md">Light</h1>
-              <p className="p text-sm font-medium">light me</p>
-            </div>
-            <div className="flex flex-col gap-1 items-center">
-              <div className="bg-gray-200 rounded-full p-3">
-                <Droplet className="text-emerald-800"/>
-              </div>
-              <h1 className="font-semibold text-md">Water</h1>
-              <p className="p text-sm font-medium">Medium</p>
-            </div>
-            <div className="flex flex-col gap-1 items-center">
-              <div className="bg-gray-200 rounded-full p-3">
-                <TreePalm className="text-emerald-800"/>
-              </div>
-              <h1 className="font-semibold text-md">Care Level</h1>
-              <p className="p text-sm font-medium">Easy</p>
-            </div>
+            <PlantFeatures icon={<Sun />} title={"Light"} subtitle={"Bright"} />
+            <PlantFeatures
+              icon={<Droplet />}
+              title={"Water"}
+              subtitle={"Medium"}
+            />
+            <PlantFeatures
+              icon={<TreePalm />}
+              title={"Care Level"}
+              subtitle={"Easy"}
+            />
           </div>
 
-          <hr className="mt-5 text-gray-300"/>
+          <hr className="mt-5 text-gray-300" />
 
           <div className="mt-5 flex items-baseline gap-2">
             <h1 className="text-4xl font-semibold">$450</h1>
@@ -110,12 +118,40 @@ const PlantDetails = () => {
           </div>
 
           <div className="mt-5">
-            <button className="w-full bg-emerald-900 text-white text-md p-4">Add To Cart</button>
+            <button className="w-full bg-emerald-900 text-white text-md p-2 rounded-lg">
+              Add To Cart
+            </button>
           </div>
 
-        </div>
-        
+          <div className="max-w-xl mt-20">
+            {/* <h1 className="text-xl text-gray-800 font-semibold">Description </h1> */}
 
+            <div className="mt-5">
+              <h1 className="text-xl font-bold ">About This Plant</h1>
+              <p className="p italic mt-3">
+                The Monte Carlo is a lush, elegant plant known for its vibrant
+                foliage and effortless charm. Its rich, glossy leaves bring life
+                to any corner of your home, making it perfect for living rooms,
+                bedrooms, or workspaces. Easy to care for and adaptable to most
+                indoor environments, this plant is a great choice for beginners
+                and plant lovers alike. With just the right amount of light and
+                occasional watering, the Monte Carlo will reward you with fresh,
+                healthy growth all year long.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr className="text-gray-300" />
+
+      <div className="mt-10">
+        <div className="px-10 flex gap-10">
+          <div className="max-w-3xl">
+            <h1 className="text-xl text-gray-800 font-semibold">Customer Reviews </h1>
+            
+          </div>
+        </div>
       </div>
     </div>
   );
