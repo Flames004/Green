@@ -13,6 +13,10 @@ const plantSchema = new mongoose.Schema({
         required: true,
         index: true
     },
+    title:{
+        type:String,
+        required: true,
+    },
     price:{
         type:Number,
         required: true
@@ -59,6 +63,21 @@ const plantSchema = new mongoose.Schema({
     available:{
         type: Boolean,
         default: true
+    },
+    water:{
+        type: String,
+        required: true,
+        enum:["Light", "Medium", "Heavy"]
+    },
+    light:{
+        type: String,
+        required: true,
+        enum: ["Low Light", "Bright Sun", "Full Sun"]
+    },
+    carelevel:{
+        type:String,
+        required: true,
+        enum:["Easy", "Medium", "Difficult"]
     },
     rating: {
       type: Number,

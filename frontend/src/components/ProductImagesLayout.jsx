@@ -18,7 +18,7 @@ const ProductImagesLayout = ({
           <div className="grid grid-cols-4 gap-6 py-4 ">
             {images.map((img) => (
               <button
-                key={img.id}
+                key={img._id}
                 onClick={() => setActiveImage(img.url)}
                 className={`rounded-lg border ${
                   activeImage === img.url

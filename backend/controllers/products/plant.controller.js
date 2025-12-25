@@ -2,6 +2,7 @@ import asyncHandler from '../../utils/asyncHandler.js'
 import {ApiError} from '../../utils/ApiError.js'
 import Plant from '../../models/plant.model.js';
 import { ApiResponse } from '../../utils/ApiResponse.js';
+import mongoose from 'mongoose';
 
 
 
@@ -60,9 +61,36 @@ const getAllPlants = asyncHandler( async(req,res) =>{
     
 });
 
+const getSinglePlant = asyncHandler( async (req,res) =>{
+
+    const {id} = req.params;
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        throw new ApiError(400, "Invalid plant id");
+    }
+
+    const plant = await Plant.findById(id);
+    if(!plant){
+        throw new ApiError(404,"No Plant found")
+    }
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(
+            200,
+            "Plant fetched Successfully",
+            true,
+            plant
+        )
+    );
+
+    
+});
+
 
 
 
 export {
     getAllPlants,
+    getSinglePlant
 }

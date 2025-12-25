@@ -85,9 +85,9 @@ const addPhoto = asyncHandler( async (req, res) =>{
 
 // plant controller
 const addPlant = asyncHandler( async(req, res) =>{
-    const {name, category, price, description, stock, size} = req.body;
+    const {name, category, price, description, stock, size, title, water, light, carelevel} = req.body;
 
-    if(!name || !category || !price || !description || !stock ){
+    if(!name || !category || !price || !description || !stock || !title || !water || !light || !carelevel ){
         throw new ApiError(400, "All fields are required")
     }
 
@@ -111,7 +111,11 @@ const addPlant = asyncHandler( async(req, res) =>{
         stock,
         thumbnail: images[0],
         images,
-        size
+        size,
+        title,
+        water, 
+        light,
+        carelevel
     });
 
     return res
