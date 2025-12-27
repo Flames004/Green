@@ -1,16 +1,11 @@
 import mongoose from 'mongoose';
 import aggregatePaginate from 'mongoose-aggregate-paginate-v2';
 
-const plantSchema = new mongoose.Schema({
+const productSchema = new mongoose.Schema({
     name:{
         type: String,
         required: true,
         trim: true,
-        index: true
-    },
-    category:{
-        type: String,
-        required: true,
         index: true
     },
     title:{
@@ -20,6 +15,11 @@ const plantSchema = new mongoose.Schema({
     price:{
         type:Number,
         required: true
+    },
+    productType:{
+        type: String,
+        required: true,
+        index: true
     },
     description:{
         type: String,
@@ -52,9 +52,6 @@ const plantSchema = new mongoose.Schema({
         required: true,
         min: 0
     },
-    height:{
-        type: Number,
-    },
     size:{
         type: String,
         enum:["small", "medium", "large", "extra_Large"],
@@ -64,28 +61,13 @@ const plantSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
-    water:{
-        type: String,
-        required: true,
-        enum:["Light", "Medium", "Heavy"]
-    },
-    light:{
-        type: String,
-        required: true,
-        enum: ["Low Light", "Bright Sun", "Full Sun"]
-    },
-    carelevel:{
-        type:String,
-        required: true,
-        enum:["Easy", "Medium", "Difficult"]
-    },
-    rating: {
+    avgRating: {
       type: Number,
       default: 0,
       min: 0,
       max: 5,
     },
-    ratingCount: {
+    totalReview: {
       type: Number,
       default: 0,
     },
@@ -95,8 +77,9 @@ const plantSchema = new mongoose.Schema({
     }
 },{timestamps: true});
 
-plantSchema.plugin(aggregatePaginate);
+productSchema.index({ name: "text" }); 
+productSchema.plugin(aggregatePaginate);
 
 
-const Plant = mongoose.model("Plant", plantSchema);
-export default Plant;
+const Product = mongoose.model("Product", productSchema);
+export default Product;
