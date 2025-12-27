@@ -47,7 +47,7 @@ const Navbar = () => {
           </Link>
         </div>
 
-        <div className="hidden lg:flex items-center w-72 h-11 rounded-lg border border-gray-300 overflow-hidden shadow-sm">
+        <div className="hidden lg:flex items-center w-72 h-11 rounded-full border border-gray-300 overflow-hidden shadow-sm">
           <input
             type="text"
             placeholder="Search..."

@@ -428,9 +428,10 @@ const availablePlants = asyncHandler( async(req,res) =>{
 
 // pot controller
 const addPot = asyncHandler( async(req, res) =>{
-    const {name, price, description, stock, shape, size, category} = req.body;
+    const {name, price, description, stock, size, title, productType, details} = req.body;
 
-    if(!name || !shape || !price || !description || !stock ){
+
+    if(!name  || !price || !description || !stock || !title || !productType){
         throw new ApiError(400, "All fields are required")
     }
 
@@ -446,17 +447,22 @@ const addPot = asyncHandler( async(req, res) =>{
     imageId: img.fileId
     }));
 
-    const pot = await Pot.create({
+    const product = await Product.create({
         name,
-        shape,
         price,
         description,
+        title,
         stock,
         thumbnail: images[0],
         images,
         size,
-        category
     });
+
+    if(productType === "Pot"){
+        await Pot.create({
+            ...details
+        })
+    }
 
     return res
     .status(200)
@@ -465,7 +471,7 @@ const addPot = asyncHandler( async(req, res) =>{
             200,
             "Pot Added successfully",
             true,
-            pot
+            product
         )
     );
 

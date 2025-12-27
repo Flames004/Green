@@ -43,14 +43,11 @@ router.get("/featured-plant", adminAuth, featuredPlants);
 router.get("/available-plant", adminAuth, availablePlants);
 router.delete("/delete-plant/:id", adminAuth, deletePlant);
 
+
+
 // pot routes
 
-router.post(
-  "/add-pot",
-  adminAuth,
-  upload.fields([{ name: "images", maxCount: 10 }]),
-  addPot
-);
+
 router.get("/pots", adminAuth, getAllPots);
 router.patch("/pots/:id/availablity", adminAuth, toggleAvailablePot);
 router.patch("/pots/:id/feature", adminAuth, toggleFeaturedPot);

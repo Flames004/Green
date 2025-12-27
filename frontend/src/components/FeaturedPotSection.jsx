@@ -7,16 +7,16 @@ import { Link } from 'react-router-dom';
 
 
 
-const FeaturedSection = () => {
+const FeaturedPotSection = () => {
 
-   const [plants, setPlants] = useState([]);
+   const [pots, setPots] = useState([]);
    const [loading, setLoading] = useState(true);
 
 
-   const AllPlants = async()=>{
+   const AllPots = async()=>{
       try {
-        const {data} = await API.get("/products/all/plants?featured=true&available=true&limit=9");
-        setPlants(data.data.docs);
+        const {data} = await API.get("/products/all/pots?featured=true&available=true&limit=9");
+        setPots(data.data.docs);
         
       } catch (error) {
         toast.error("Server Error");
@@ -29,7 +29,7 @@ const FeaturedSection = () => {
 
   useEffect(()=>{
 
-    AllPlants();
+    AllPots();
 
   }, []) 
 
@@ -43,20 +43,15 @@ const FeaturedSection = () => {
   }
 
   return (
-    <div className='py-10  px-5 md:px-25'>
-      <div className='text-center mb-10'>
-        <h1 className='md:text-4xl font-medium text-2xl'>Featured Collections</h1>
-        <p className='my-4 text-sm md:text-lg '>Discover our handpicked selection of vibrant plants and artisan pots</p>
-      </div>
-
+    <div className='py-10 md:py-5 px-5 md:px-25'>
       <div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-        {plants.map((plant) =>(
-            <ProductCard key={plant._id} product={plant}/>
+        {pots.map((pot) =>(
+            <ProductCard key={pot._id} product={pot}/>
         ))}
       </div>
-      <div className='text-end'>
-        <Link to={"/plants"}>
-        <button className='bg-emerald-800 text-white p-3 rounded-full '>
+      <div className='text-end py-10 md:py-10'>
+        <Link to={"/pots"}>
+        <button className=' text-white  p-3 rounded-full bg-emerald-800'>
             View All
       </button>
       </Link>
@@ -65,4 +60,4 @@ const FeaturedSection = () => {
   )
 }
 
-export default FeaturedSection
+export default FeaturedPotSection

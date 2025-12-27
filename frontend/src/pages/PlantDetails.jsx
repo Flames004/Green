@@ -54,11 +54,10 @@ const PlantDetails = () => {
 
   const fetchPlantDetail = async () => {
   try {
-    const { data } = await API.get(`/plants/single-plant/${id}`);
-    console.log(data.data);
-    
+    const { data } = await API.get(`/products/single-plant/${id}`);
 
-    setPlant(data.data);
+    setPlant(data.data.docs[0]);
+
   } catch (error) {
     console.log(error.response?.data || error);
   } finally {
@@ -69,6 +68,7 @@ const PlantDetails = () => {
 
   useEffect(() =>{
       fetchPlantDetail();
+      
   } ,[])
 
   useEffect(() => {
@@ -76,6 +76,7 @@ const PlantDetails = () => {
       setActiveImage(plant.images[0].url);
     }
   }, [plant]);
+
 
   if (loading) {
     return (
@@ -99,12 +100,12 @@ const PlantDetails = () => {
         <div>
           <div className="flex gap-2">
             <button className="bg-gray-200 p-1 text-xs rounded">{plant.size}</button>
-            <button className="bg-gray-200 p-1 text-xs rounded">{plant.carelevel}</button>
+            <button className="bg-gray-200 p-1 text-xs rounded">{plant.plantDetails.carelevel}</button>
           </div>
 
           <div className="mt-5 flex flex-col gap-3">
             <h1 className="text-4xl font-semibold">{plant.name}</h1>
-            <p className="p italic">{plant.category}</p>
+            <p className="p italic">{plant.plantDetails.category}</p>
 
             <div className="flex gap-2 items-center mt-5">
               <StarRating rating={5} />
@@ -155,14 +156,7 @@ const PlantDetails = () => {
             <div className="mt-5">
               <h1 className="text-xl font-bold ">About This Plant</h1>
               <p className="p italic mt-3">
-                The Monte Carlo is a lush, elegant plant known for its vibrant
-                foliage and effortless charm. Its rich, glossy leaves bring life
-                to any corner of your home, making it perfect for living rooms,
-                bedrooms, or workspaces. Easy to care for and adaptable to most
-                indoor environments, this plant is a great choice for beginners
-                and plant lovers alike. With just the right amount of light and
-                occasional watering, the Monte Carlo will reward you with fresh,
-                healthy growth all year long.
+                {plant.description}
               </p>
             </div>
           </div>
