@@ -147,10 +147,70 @@ const removeItem = asyncHandler( async(req,res) =>{
     if(!productId){
         throw new ApiError(400, "ProductId also required");
     }
+
+    if(!mongoose.Types.ObjectId.isValid(productId)){
+        throw new ApiError(400,"Invalid ProductId")
+    }
+
+    const cart = await Cart.findOne({user: userId});
+    if(!cart){
+        throw new ApiError(404, "Cart not Found");
+    }
+
+    const itemExist = cart.items.some((i) => i.productId.toString() === productId);
+    if(!itemExist){
+        throw new ApiError(404, "Item not found")
+    }
+
+    cart.items = cart.items.filter( 
+        (item) => item.productId.toString() !== productId
+    );
+
+    await cart.save();
+
+    return res.status(200).json(
+    new ApiResponse(
+      200,
+      "Item removed from cart",
+      true,
+      cart
+    )
+  );
+
+});
+
+const getCart = asyncHandler( async(req,res) =>{
+
+    const userId = req.user?._id;
+    if(!userId){
+        throw new ApiError(409, "Unauthorised Access");
+    }
+
+    const cart = await Cart.findOne({user: userId})
+        .populate({
+            path:"items.productId",
+            select: "name price thumbnail stock available"
+        })
+        .lean();
+
+    if(!cart){
+        throw new ApiError(404, "Cart not Found");
+    }
     
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            "Cart fetched successfully",
+            true,
+            cart
+        )
+    );
 });
 
 export {
     addToCart,
-    quantityUpdate
+    quantityUpdate,
+    removeItem,
+    getCart
 }
