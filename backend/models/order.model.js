@@ -4,7 +4,8 @@ const orderSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        required: true
+        required: true,
+        index: true
     },
     orderNumber:{
         type: String,
@@ -39,12 +40,22 @@ const orderSchema = new mongoose.Schema({
     orderStatus:{
         type: String,
         enum: ["confirmed", "packed", "shipped", "delivered", "cancelled"],
-        default: "confirmed"
+        default: "confirmed",
+        index: true
     },
     paymentMethod: {
       type: String,
       enum: ["cod", "online"],
       default: "cod"
+    },
+    shippingAddress: {
+      fullName: String,
+      phone: String,
+      address: String,
+      city: String,
+      state: String,
+      pinCode: String,
+      country: { type: String, default: "India" }
     },
     paymentStatus: {
       type: String,

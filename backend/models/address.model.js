@@ -7,11 +7,10 @@ const addressSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    fullName: {
+    fullName:{
       type: String,
       required: true
     },
-
     phone: {
       type: String,
       required: true

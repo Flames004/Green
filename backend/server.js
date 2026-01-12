@@ -8,6 +8,7 @@ import adminRoutes from "./routes/admin.routes.js"
 import adminCreate from "./scripts/adminCreate.js";
 import productRoutes from "./routes/product.routes.js"
 import cartRoutes from "./routes/cart.routes.js"
+import addressRoutes from "./routes/address.routes.js"
 
 
 
@@ -30,7 +31,9 @@ app.use(cors({
 app.use('/api/v1/auth' , authRoutes);
 app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/admin', adminRoutes);
-app.use('/api/v1/user', cartRoutes);
+app.use('/api/v1/cart', cartRoutes);
+app.use('/api/v1/address', addressRoutes);
+
 
 app.listen(port, () =>{
     console.log(`server is listening on port: ${port}`);
