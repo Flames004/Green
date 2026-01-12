@@ -49,12 +49,12 @@ const orderSchema = new mongoose.Schema({
       default: "cod"
     },
     shippingAddress: {
-      fullName: String,
-      phone: String,
-      address: String,
-      city: String,
-      state: String,
-      pinCode: String,
+      fullName: { type: String },
+      phone: { type: String },
+      address: { type: String },
+      city: { type: String },
+      state: { type: String },
+      pinCode: { type: String },
       country: { type: String, default: "India" }
     },
     paymentStatus: {

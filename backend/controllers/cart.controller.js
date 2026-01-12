@@ -45,7 +45,7 @@ const addToCart = asyncHandler( async (req,res) => {
     if(!cart){
         cart = new Cart({ 
             user:userId, 
-            items: [] 
+            items: []
         });
     }
 
