@@ -12,7 +12,7 @@ const Cart = () => {
     const quantity = 1;
     const size = "Medium";
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen max-w-6xl mx-auto pb-24">
       <div
         className="flex items-center justify-between gap-2 sm:gap-3 px-3 py-4 sm:p-5 border-b border-gray-200">
         <Home className="text-emerald-800" size={22}  />
@@ -24,7 +24,7 @@ const Cart = () => {
 
       <div className=" flex flex-col md:flex-row gap-5 md:gap-20 p-0 md:p-10 ">
        
-        <div className="md:min-w-3xl max-w-lg flex-1">
+        <div className="md:min-w-2xl max-w-lg flex-1">
             <CartCard name={name} image={image} title={title} price={price} total={total} quantity={quantity} size={size}/>
             
 

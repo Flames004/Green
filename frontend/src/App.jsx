@@ -14,6 +14,8 @@ import PlantDetails from './pages/PlantDetails'
 import PotDetails from './pages/PotDetails'
 import Pots from './pages/Pots'
 import Cart from './pages/Cart'
+import Address from './pages/Address'
+import Payment from './pages/Payment'
 
 
 const App = () => {
@@ -33,6 +35,10 @@ const App = () => {
  
       </Route>
       <Route path='/checkout/cart' element={<Cart/>}/>
+      <Route path='/checkout/address' element={<Address/>}/>
+      <Route path='/checkout/payment' element={<Payment/>}/>
+
+
       <Route path='/admin/login' element={<AdminLogin/>}/>
 
       <Route path='/admin' element={<AdminLayout/>}>
