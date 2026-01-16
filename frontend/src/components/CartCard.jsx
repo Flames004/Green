@@ -1,7 +1,38 @@
 import { Trash2 } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import API from "../api/axios";
+import { useDispatch } from "react-redux";
+import { getCart, removeItem, updateQuantity } from "../redux/cartSlice";
 
-const CartCard = ({ image, name, title, price, quantity, size ,category="indoor"}) => {
+const CartCard = ({ image, name, title, price, quantity, size, productId}) => {
+  const [qty, setQty] = useState(quantity);
+  const dispatch = useDispatch();
+
+
+  const decrease = async() =>{
+    if(qty <= 1) return;
+    const temp = qty - 1;
+    setQty(temp);
+    await dispatch(updateQuantity({productId, quantity: temp}));
+  }
+
+   const increase = async() =>{
+    const temp = qty + 1;
+    setQty(temp);
+    await dispatch(updateQuantity({productId, quantity: temp}));
+  }
+
+
+  const handleRemove = async() =>{
+   await dispatch(removeItem({productId}));
+   await dispatch(getCart());
+  } 
+
+  useEffect(() =>{
+    setQty(quantity);
+  },[quantity]);
+
+
   return (
     <div className="bg-white flex md:mb-2 p-4 md:p-6 border-b border-gray-300 md:rounded">
 
@@ -21,9 +52,8 @@ const CartCard = ({ image, name, title, price, quantity, size ,category="indoor"
               {title}
             </p>
 
-           <div className="flex gap-4">
-            <span className="bg-gray-200 text-xs rounded p-1 ">{size}</span>
-            <span className="bg-gray-200 text-xs rounded p-1 ">{category}</span>
+           <div className="flex">
+            <span className="bg-gray-200 text-xs rounded px-3 py-1 ">{size}</span>
            </div>
           
 
@@ -36,14 +66,19 @@ const CartCard = ({ image, name, title, price, quantity, size ,category="indoor"
 
       <div className="flex flex-col items-end  justify-between gap-3 sm:gap-2">
 
-        <button className="text-gray-400 hover:text-red-500 cursor-pointer">
+        <button 
+        onClick={handleRemove} className="text-gray-400 hover:text-red-500 cursor-pointer">
           <Trash2 size={18} />
         </button>
 
         <div className="flex items-center border rounded-lg px-2 py-1">
-          <button className="px-2 text-sm">−</button>
-          <span className="px-2 text-sm font-medium">{quantity}</span>
-          <button className="px-2 text-sm">+</button>
+          <button 
+          onClick={decrease}
+          className="px-2 text-sm cursor-pointer">−</button>
+          <span className="px-2 text-sm font-medium">{qty}</span>
+          <button
+          onClick={increase}
+          className="px-2 text-sm cursor-pointer">+</button>
         </div>
 
       </div>

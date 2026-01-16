@@ -3,9 +3,29 @@ import { User, MapPin, ShoppingBag, LogOut } from "lucide-react";
 import Profile from "../components/account/Profile";
 import Address from "../components/account/Address";
 import Order from "../components/account/Order";
+import API from "../api/axios";
+import {useDispatch} from 'react-redux';
+import { logout } from "../redux/authSlice";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Account = () => {
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [activeTab, setActiveTab] = useState("profile");
+
+   const logoutHandler = async()=>{
+      try {
+        await API.get('/auth/logout');
+        dispatch(logout());
+        navigate("/");
+        toast.success("logout Successfully")
+      } catch (error) {
+        console.log(error);
+      }
+   }
 
   return (
     <div className="flex h-[90vh]">
@@ -69,7 +89,9 @@ const Account = () => {
         </div>
 
         <div className="mt-auto">
-          <button className="flex items-center gap-4 px-4 py-3 w-full rounded-xl bg-gray-100 hover:bg-black hover:text-white">
+          <button 
+          onClick={() => logoutHandler()}
+          className="flex items-center gap-4 px-4 py-3 w-full rounded-xl bg-gray-100 hover:bg-black hover:text-white">
             <LogOut size={20} />
             Logout
           </button>

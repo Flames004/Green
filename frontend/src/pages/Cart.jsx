@@ -1,31 +1,44 @@
 import { Home, ShoppingBag } from "lucide-react";
-import React from "react";
 import CartCard from "../components/CartCard";
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import API from "../api/axios"
+import { Loader } from "../components/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { getCart } from "../redux/cartSlice";
 
 const Cart = () => {
 
-    const name = "Aloe Vera Plant";
-    const image = "/public/greenhouse.jpg";
-    const title = "Succulent Plant kjhf jhs kjkjh ";
-    const price = "15.00";
-    const total = "15.00";
-    const quantity = 1;
-    const size = "Medium";
+  const dispatch = useDispatch();
+  const items = useSelector((state) => state.cart.items || []);
+  const loading = useSelector((state) => state.cart.loading);
+
+  useEffect(() =>{
+    dispatch(getCart());
+  },[dispatch]);
+
+    if(loading){
+      return <div className="flex items-center min-h-screen mx-auto justify-center"><Loader /></div>;
+    }
+
   return (
-    <div className="min-h-screen max-w-6xl mx-auto pb-24">
+    <div className="min-h-screen  mx-auto pb-24">
       <div
         className="flex items-center justify-between gap-2 sm:gap-3 px-3 py-4 sm:p-5 border-b border-gray-200">
-        <Home className="text-emerald-800" size={22}  />
+        <Link to="/" ><Home className="text-emerald-800" size={22}  /></Link>
         <h1 className="text-lg sm:text-2xl md:text-3xl font-semibold text-gray-800">
           Shopping Cart
         </h1>
-         <ShoppingBag className="text-blue-800" size={22}  />
+        <Link to="/checkout/cart"><ShoppingBag className="text-blue-800" size={22}  /></Link>
       </div>
 
       <div className=" flex flex-col md:flex-row gap-5 md:gap-20 p-0 md:p-10 ">
        
         <div className="md:min-w-2xl max-w-lg flex-1">
-            <CartCard name={name} image={image} title={title} price={price} total={total} quantity={quantity} size={size}/>
+          {items.map((item) =>(
+             <CartCard key={item._id} name={item.productId.name} image={item.productId.thumbnail.url} title={item.productId.title} price={item.productId.price}  quantity={item.quantity} size={item.productId.size} productId={item.productId._id}/>
+          ))}
+           
             
 
 
