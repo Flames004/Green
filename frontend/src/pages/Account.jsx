@@ -33,7 +33,6 @@ const Account = () => {
       console.log(error);
     }
   };
-  console.log(user, "user");
 
   return (
     <div className="flex h-[90vh]">

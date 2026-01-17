@@ -1,8 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { User, Mail, Phone, Edit2, Save } from "lucide-react";
+import API from "../../api/axios";
+import { toast } from "react-toastify";
 
 const Profile = ({user}) => {
   const [edit, setEdit] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name:"",
+    email:"",
+    gender:""
+  });
+
+  useEffect(() => {
+  if (user) {
+    setFormData({
+      name: user.name || "",
+      email: user.email || "",
+      gender: user.gender || "",
+    });
+  }
+}, [user]);
+
+
+  const submitButtonHandler = () =>{
+    if(edit){
+      saveChanges();
+    }
+    else{
+      setEdit(true);
+    }
+  }
+
+  const saveChanges = async () => {
+    try {
+      setLoading(true);
+
+      await API.patch("/user/update-profile", formData);
+      toast.success("Profile Updated Successfully");
+      setEdit(false);
+
+    } catch (error) {
+      toast.error(error.response?.data?.message, "Failed to update profile");
+    } finally{
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="max-w-3xl">
@@ -14,11 +57,11 @@ const Profile = ({user}) => {
         
 
         <button
-          onClick={() => setEdit(!edit)}
+          onClick={submitButtonHandler}
           className="flex items-center gap-2 text-sm px-4 py-2 rounded-lg border hover:bg-gray-100"
         >
           {edit ? <Save size={16} /> : <Edit2 size={16} />}
-          {edit ? "Save" : "Edit"}
+          {loading ? "Saving..." : edit ? "Save" : "Edit"}
         </button>
       </div>
 
@@ -29,13 +72,14 @@ const Profile = ({user}) => {
           <p className="text-sm italic text-gray-600">Update Your Basic Account Details</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <form className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
           <div>
             <label className="text-sm text-gray-600">Full Name</label>
             <input
               disabled={!edit}
-              defaultValue={user.name}
+              onChange={(e) => setFormData({...formData, name: e.target.value})}
+              value={formData.name}
               placeholder="Username"
               className={`w-full mt-1 px-3 py-2 rounded-lg text-sm outline-none
                 ${edit ? "border bg-white" : "bg-gray-100 border-none"}
@@ -52,7 +96,8 @@ const Profile = ({user}) => {
               />
               <input
                 disabled={!edit}
-                defaultValue={user.email}
+                onChange={(e) => setFormData({...formData, email: e.target.value})}
+                value={formData.email}
                 placeholder="Guest007@gmail.com"
                 className={`w-full mt-1 pl-9 pr-3 py-2 rounded-lg text-sm outline-none
                   ${edit ? "border bg-white" : "bg-gray-100 border-none"}
@@ -90,6 +135,9 @@ const Profile = ({user}) => {
                   <input
                     type="radio"
                     name="gender"
+                    value={g}
+                    checked={formData.gender === g}
+                    onChange={(e) => setFormData({...formData, gender: e.target.value})}
                     disabled={!edit}
                     className="accent-emerald-600"
                   />
@@ -99,7 +147,7 @@ const Profile = ({user}) => {
             </div>
           </div>
 
-        </div>
+        </form>
 
       </div>
 

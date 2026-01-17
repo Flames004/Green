@@ -11,7 +11,7 @@ import {
 const router = Router();
 
 router.post("/add-addr", verifyJwt, addAddress);
-router.get("/get-addr", verifyJwt, getAddress);
+router.get("/get-addrs", verifyJwt, getAddress);
 router.delete("/remove-addr/:id", verifyJwt, deleteAddress);
 router.patch("/update-addr/:id", verifyJwt, updateAddress);
 router.patch("/update-default/:id", verifyJwt, setDefaultAddress);
