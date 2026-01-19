@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "../redux/cartSlice";
 import { toast } from "react-toastify";
@@ -9,6 +9,7 @@ const ProductCard = ({ product }) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const auth = useSelector((state) => state.auth.isAuth);
 
   const [loading, setLoading] = useState(false);
@@ -42,11 +43,15 @@ const ProductCard = ({ product }) => {
     }
   };
 
-  let productInfo = "";
-  if (product.productType === "Plant") {
-    productInfo = product.plantDetails.category;
-  } else if (product.productType === "Pot") {
-    productInfo = product.potDetails.shape;
+  let productInfo = product.productType;
+  const isHomePage = location.pathname === "/";
+
+  if(isHomePage){
+    if (product.productType === "Plant") {
+      productInfo = product.plantDetails.category;
+    } else if (product.productType === "Pot") {
+      productInfo = product.potDetails.shape;
+    }
   }
   return (
     

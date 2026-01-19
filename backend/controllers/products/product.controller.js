@@ -5,6 +5,35 @@ import mongoose from 'mongoose';
 import Product from '../../models/product.model.js';
 
 
+const globalSearch = asyncHandler( async (req,res) =>{
+
+    const { query } = req.query;
+    if(!query){
+        throw new ApiError(400, "Search query required")
+    }
+
+    const products = await Product.find({
+        $or:[
+            { name: { $regex: query, $options: "i" } },
+            { title: {$regex: query, $options: "i"}},
+            { description: { $regex: query, $options: "i"}}
+        ]
+    })
+    .limit(10)
+    .select("name title price productType thumbnail");
+
+    return res.status(200)
+    .json(
+        new ApiResponse(
+            200,
+            "Products fetched successfully",
+            true,
+            products
+        )
+    );
+
+});
+
 //plant controller
 
 const getAllPlants = asyncHandler( async(req,res) =>{
@@ -266,5 +295,6 @@ export {
     getAllPlants,
     getSinglePlant,
     getAllPots,
-    getSinglePot
+    getSinglePot,
+    globalSearch
 }

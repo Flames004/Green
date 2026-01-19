@@ -1,9 +1,11 @@
 import { Router } from 'express';
-import { getAllPlants, getAllPots, getSinglePlant, getSinglePot } from '../controllers/products/product.controller.js';
+import { getAllPlants, getAllPots, getSinglePlant, getSinglePot, globalSearch } from '../controllers/products/product.controller.js';
 
 
 
 const router = Router();
+
+router.get("/search", globalSearch);
 
 // plant
 router.get("/all/plants", getAllPlants);

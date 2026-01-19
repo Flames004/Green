@@ -21,6 +21,7 @@ import { useEffect } from 'react'
 import { loadUser } from './redux/authSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import ProtectedRoute from './helper/ProtectedRoute'
+import SearchResult from './pages/SearchResult'
 
 
 const App = () => {
@@ -48,6 +49,7 @@ const App = () => {
         <Route path='/plants/:id' element={<PlantDetails/>}/>
         <Route path='/pots' element={<Pots/>}/>
         <Route path='/pots/:id' element={<PotDetails/>}/>
+        <Route path="/search" element={<SearchResult/>}/>
         <Route path='/account' element={<ProtectedRoute><Account/></ProtectedRoute>}/>
 
 

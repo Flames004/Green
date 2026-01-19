@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Menu, Search, ShoppingCart, User, X } from "lucide-react";
 import { useSelector } from "react-redux";
+import API from "../api/axios";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const cartCount = useSelector(state => state.cart.items.length);
   const auth = useSelector(state => state.auth.isAuth);  
+  const [query, setQuery] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+  if (!query || query.trim() === "") return;
+
+  navigate(`/search?query=${query}`);
+};
 
   return (
     <div>
@@ -52,12 +62,18 @@ const Navbar = () => {
 
         <div className="hidden lg:flex items-center w-72 h-11 rounded-full border border-gray-300 overflow-hidden shadow-sm">
           <input
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if(e.key === "Enter") handleSearch()
+            }}
             type="text"
             placeholder="Search..."
             className="px-3 w-full bg-white h-full outline-none text-sm text-gray-700 placeholder-gray-400"
           />
 
-          <button className="bg-emerald-600 hover:bg-emerald-700 cursor-pointer transition h-full px-3 flex items-center justify-center">
+          <button 
+          onClick={ handleSearch}
+          className="bg-emerald-600 hover:bg-emerald-700 cursor-pointer transition h-full px-3 flex items-center justify-center">
             <Search className="w-5 h-5 text-white" />
           </button>
         </div>
