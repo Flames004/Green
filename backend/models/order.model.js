@@ -62,6 +62,10 @@ const orderSchema = new mongoose.Schema({
       enum: ["pending", "paid", "failed", "refunded"],
       default: "pending"
     },
+    paymentDetails: {
+      razorpayPaymentId: String,
+      razorpayOrderId: String
+    }
 }, {timestamps: true});
 
 const Order = mongoose.model("Order", orderSchema);
