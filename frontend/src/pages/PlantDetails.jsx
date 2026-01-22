@@ -3,46 +3,14 @@ import StarRating from "../components/StarRating";
 import { CircleUser, Droplet, Sun, TreePalm } from "lucide-react";
 import ProductImagesLayout from "../components/ProductImagesLayout";
 import PlantFeatures from "../components/PlantFeatures";
-import ReviewCard from "../components/ReviewCard";
 import API from "../api/axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { Loader } from "../components/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { addItem } from "../redux/cartSlice";
+import ReviewsSection from "../components/ReviewSection";
 
-const reviews = [
-  {
-    name: "Aarav Sharma",
-    time: "2 days ago",
-    review: "Beautiful and healthy plant. Arrived well packed and fresh.",
-    rating: 5,
-  },
-  {
-    name: "Neha Verma",
-    time: "1 week ago",
-    review: "Looks great in my living room. Needs moderate watering.",
-    rating: 4,
-  },
-  {
-    name: "Rohan Patel",
-    time: "3 weeks ago",
-    review: "Good quality but delivery took a little longer.",
-    rating: 4,
-  },
-  {
-    name: "Simran Kaur",
-    time: "1 month ago",
-    review: "Perfect for beginners. Very easy to take care of.",
-    rating: 5,
-  },
-  {
-    name: "Vikram Rao",
-    time: "2 months ago",
-    review: "Plant was smaller than expected but still healthy.",
-    rating: 3,
-  },
-];
 
 const PlantDetails = () => {
   const auth = useSelector((state) => state.auth.isAuth);
@@ -235,25 +203,8 @@ const PlantDetails = () => {
 
       <hr className="text-gray-300" />
 
-      <div className="mt-4 md:mt-10 ">
-        <div className="px-4 md:px-10">
-          <h1 className="text-xl md:text-3xl text-gray-800 font-semibold mb-5">
-            Customer Reviews{" "}
-          </h1>
-          {reviews.map((review, idx) => (
-            <div key={idx} className="border-b border-gray-200 mb-5">
-              <div className="flex items-center gap-2 mb-2">
-                <CircleUser size={20} />
-                <StarRating rating={review.rating} />
-              </div>
-              <ReviewCard
-                name={review.name}
-                time={review.time}
-                review={review.review}
-              />
-            </div>
-          ))}
-        </div>
+      <div className="mt-4 md:mt-10">
+        <ReviewsSection productId={plant._id} />
       </div>
 
       <div className="mt-10 px-10 min-h-screen">

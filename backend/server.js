@@ -13,6 +13,7 @@ import orderRoutes from "./routes/order.routes.js"
 import userRoutes from "./routes/user.routes.js"
 import contactRoutes from "./routes/contact.routes.js"
 import paymentRoutes from "./routes/payment.routes.js"
+import reviewRoutes from "./routes/review.routes.js"
 
 
 
@@ -41,6 +42,7 @@ app.use('/api/v1/order', orderRoutes);
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/contact', contactRoutes);
 app.use('/api/v1/payment', paymentRoutes);
+app.use('/api/v1/review', reviewRoutes);
 
 app.listen(port, () =>{
     console.log(`server is listening on port: ${port}`);

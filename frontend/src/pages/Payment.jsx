@@ -5,34 +5,7 @@ import { priceSummary } from "../redux/cartSlice";
 import { toast } from "react-toastify";
 import API from "../api/axios";
 import { useNavigate} from 'react-router-dom';
-// import loadRazorpay from "../helper/loadRazorPay";
-
-const loadRazorpay = () => {
-  return new Promise((resolve) => {
-    // already loaded
-    if (window.Razorpay) {
-      console.log("Razorpay already available");
-      resolve(true);
-      return;
-    }
-
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.async = true;
-
-    script.onload = () => {
-      console.log("Razorpay script loaded");
-      resolve(true);
-    };
-
-    script.onerror = () => {
-      console.error("Failed to load Razorpay script");
-      resolve(false);
-    };
-
-    document.body.appendChild(script);
-  });
-};
+import loadRazorpay from "../helper/loadRazorPay";
 
 
 
@@ -94,9 +67,11 @@ const Payment = () => {
           });
 
           toast.success("Payment successful");
-          navigate("/orders");
+          navigate("/");
         } catch (error) {
           toast.error("Payment verification failed");
+          console.log(error);
+          
         }
       },
       theme: {
