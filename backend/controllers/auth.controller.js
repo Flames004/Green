@@ -189,7 +189,7 @@ const adminLogin = asyncHandler( async(req,res) =>{
 
     const { email, password } = req.body;
     if(!email || !password){
-        throw new ApiError(404, "All fields are required");
+        throw new ApiError(400, "All fields are required");
     }
 
     const user = await User.findOne({email}).select("password");

@@ -27,7 +27,7 @@ const CategorySection = () => {
             <h1 className='md:text-4xl font-medium text-xl'>Shop By Category</h1>
             <p className='my-1 md:my-4 text-sm md:text-lg'>Find exactly what you're looking for</p>
       </div>
-      <div className='flex gap-4 overflow-x-scroll md:overflow-x-hidden'>
+      <div className='flex gap-6 overflow-x-scroll md:overflow-x-hidden'>
         {categories.map((category, index) => (
             <Link to={`/plants`} key={index}>
               <CategoryCard category={category} />

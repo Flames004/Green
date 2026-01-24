@@ -10,20 +10,19 @@ import { NavLink } from "react-router-dom";
 const Sidebar = () => {
   const menuItems = [
     { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/admin/plants", label: "Plants", icon: Leaf },
-    { href: "/admin/pots", label: "Pots", icon: Package },
+    { href: "/admin/product", label: "Products", icon: Package },
     { href: "/admin/orders", label: "Orders", icon: ShoppingCart },
     { href: "/admin/settings", label: "Settings", icon: Settings },
   ];
 
   return (
     <>
-      <aside className="lg:block hidden h-screen  bg-gray-200/50   flex-col font-medium border-r border-gray-300">
-        <div className="text-xl font-bold p-5 border-b border-gray-300">
+      <aside className="lg:block hidden h-screen  bg-gray-200/50 flex-col font-medium border-r border-gray-300">
+        <div className="text-sm sm:text-lg font-bold p-5 border-b border-gray-300 text-emerald-800">
            GreenLand
         </div>
 
-        <nav className="flex-1 p-4 mt-4">
+        <nav className="flex-1 p-2 mt-2">
           <ul className="space-y-2">
             {menuItems.map((item, index) => {
               const Icon = item.icon;
@@ -32,11 +31,11 @@ const Sidebar = () => {
                   <NavLink
                     to={item.href}
                     className={({ isActive }) =>
-                      `flex items-center gap-3 px-4 py-3 rounded-lg transition 
+                      `flex items-center text-sm gap-2 px-3 py-2 rounded-lg transition text-gray-900
                     ${
                       isActive
-                        ? "bg-emerald-700 text-white"
-                        : "text-black hover:bg-emerald-200/50 hover:text-black"
+                        ? "bg-gray-200 text-gray-700"
+                        : "text-gray-900 hover:bg-gray-200/50 hover:text-gray-900"
                     }`
                     }
                   >

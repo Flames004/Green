@@ -5,11 +5,11 @@ const AdminLayout = () => {
   return (
     <div className="flex h-screen">
 
-      <div className="fixed top-0 left-0 h-screen w-70">
+      <div className="fixed top-0 left-0 h-screen w-60">
         <Sidebar />
       </div>
 
-      <div className="lg:ml-70 flex-1 overflow-y-auto bg-gray-100 p-2">
+      <div className="lg:ml-60 flex-1 overflow-y-auto bg-gray-50/40 ">
         <Outlet />
       </div>
 
