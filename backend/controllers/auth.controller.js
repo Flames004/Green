@@ -96,6 +96,7 @@ const verifyOtp = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: true,
+    sameSite: 'none'
   };
 
   return res
@@ -131,6 +132,7 @@ const logoutUser = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: true,
+    sameSite: 'none'
   };
 
   return res
@@ -168,7 +170,7 @@ const regenrateAccessToken = asyncHandler( async(req,res) => {
   const options = {
     httpOnly: true,
     secure: true,
-    sameSite:'strict'
+    sameSite:'none'
   }
 
   return res
@@ -217,6 +219,7 @@ const adminLogin = asyncHandler( async(req,res) =>{
     const options = {
         httpOnly: true,
         secure: true,
+        sameSite: 'none'
     }
 
     return res
