@@ -7,7 +7,7 @@ import asyncHandler from "../utils/asyncHandler.js";
 import uploadImages from "../services/uploads.service.js";
 import Pot from "../models/potDetail.model.js";
 import Product from "../models/product.model.js";
-import Plant from "../models/PlantDetail.model.js";
+import Plant from "../models/plantDetail.model.js";
 import Order from "../models/order.model.js";
 
 
