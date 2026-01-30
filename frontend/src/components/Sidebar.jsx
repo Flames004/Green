@@ -4,6 +4,7 @@ import {
   Package,
   Settings,
   ShoppingCart,
+  User,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
@@ -12,7 +13,10 @@ const Sidebar = () => {
     { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { href: "/admin/products", label: "Products", icon: Package },
     { href: "/admin/orders", label: "Orders", icon: ShoppingCart },
+    { href: "/admin/customers", label: "Customers", icon: User },
     { href: "/admin/settings", label: "Settings", icon: Settings },
+
+    
   ];
 
   return (

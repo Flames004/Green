@@ -77,7 +77,7 @@ const OrderTable = ({ orders }) => {
 
               <td className="px-4 py-3 text-center">
                   <button
-                  onClick={}
+                  onClick={() => navigate(`/admin/orders/${order._id}`)}
                     className="px-3 py-1 text-xs rounded-md border hover:bg-gray-100"
                   >
                     View
