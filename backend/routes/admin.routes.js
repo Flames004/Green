@@ -5,12 +5,15 @@ import {
   addPhoto,
   addProduct,
   changePassword,
+  customers,
   dashboardData,
   deleteProduct,
   getMonthlyRevenue,
   getOrders,
   getProducts,
+  orderDetail,
   toggleProduct,
+  updateOrderStatus,
 } from "../controllers/admin.controller.js";
 
 const router = Router();
@@ -28,6 +31,9 @@ router.get("/monthly-rev", getMonthlyRevenue);
 router.get("/recent-orders", dashboardData);
 router.patch("/toggle/:productId", toggleProduct);
 router.delete("/delete/:productId", deleteProduct);
+router.get("/order/:orderId", orderDetail);
+router.patch("/order/status/:orderId", updateOrderStatus);
+router.get("/customers", customers);
 
 
 
