@@ -40,7 +40,7 @@ const categories = [
 
 const CategorySection = () => {
   return (
-    <section className="py-8 md:py-12 px-4 md:px-10 bg-gradient-to-b from-white to-gray-50">
+    <section className="px-4 md:px-10 bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8 md:mb-10">
