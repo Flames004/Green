@@ -67,6 +67,7 @@ const addPhoto = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, "Image uploaded", true, user));
 });
 
+
 // Product Controller
 const addProduct = asyncHandler(async (req, res) => {
   const { name, price, description, stock, size, title, productType } =

@@ -25,15 +25,15 @@ router.post(
 );
 router.patch("/change-password", adminAuth, changePassword);
 router.post("/add-photo", adminAuth, upload.single("image"), addPhoto);
-router.get("/products", getProducts);
-router.get("/orders", getOrders);
-router.get("/monthly-rev", getMonthlyRevenue);
-router.get("/recent-orders", dashboardData);
-router.patch("/toggle/:productId", toggleProduct);
-router.delete("/delete/:productId", deleteProduct);
-router.get("/order/:orderId", orderDetail);
-router.patch("/order/status/:orderId", updateOrderStatus);
-router.get("/customers", customers);
+router.get("/products",adminAuth, getProducts);
+router.get("/orders", adminAuth, getOrders);
+router.get("/monthly-rev", adminAuth, getMonthlyRevenue);
+router.get("/recent-orders", adminAuth, dashboardData);
+router.patch("/toggle/:productId", adminAuth, toggleProduct);
+router.delete("/delete/:productId", adminAuth, deleteProduct);
+router.get("/order/:orderId",adminAuth, orderDetail);
+router.patch("/order/status/:orderId", adminAuth, updateOrderStatus);
+router.get("/customers", adminAuth, customers);
 
 
 
