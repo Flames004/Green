@@ -167,7 +167,7 @@ const getOrders = asyncHandler(async (req, res) => {
   if (search) {
     query.$or = [
       { orderNumber: { $regex: search, $options: "i" } },
-      { orderNumber: { $regex: search, $options: "i" } },
+      { orderStatus: { $regex: search, $options: "i" } },
     ];
   }
 
@@ -343,6 +343,7 @@ const orderDetail = asyncHandler(async (req, res) => {
         orderNumber: 1,
         createdAt: 1,
         paymentStatus: 1,
+        paymentMethod:1,
         orderStatus: 1,
         items: { name: 1, quantity: 1, price: 1 },
         totalAmount: 1,
@@ -385,10 +386,20 @@ const customers = asyncHandler(async(req,res) =>{
     const page = req.query.page || 1;
     const limit = req.query.limit || 15;
 
+    const {search} = req.query;
+    let query={
+        role:"user"
+    };
+
+    if(search){
+        query.$or = [
+            { name: { $regex: search, $options: "i" }},
+            {email:{ $regex: search, $options: "i"}}
+        ]
+    }
+
     const pipeline = [
-        { $match:{
-            role:"user"
-        }},
+        { $match: query },
         {
             $lookup:{
                 from: "orders",

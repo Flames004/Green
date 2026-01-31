@@ -25,6 +25,7 @@ import ProductPage from './pages/admin/ProductPage'
 import Orders from './pages/admin/Orders'
 import OrderDetails from './pages/admin/OrderDetails'
 import Customers from './pages/admin/Customers'
+import AdminSettings from './pages/admin/AdminSettings'
 
 
 const App = () => {
@@ -69,6 +70,8 @@ const App = () => {
           <Route path='/admin/orders' element={<Orders/>}/>
           <Route path='/admin/orders/:id' element={<OrderDetails/>}/>
           <Route path='/admin/customers' element={<Customers/>}/>
+          <Route path='/admin/settings' element={<AdminSettings/>}/>
+
 
 
           <Route path='/admin/products/new' element={<AddPlant/>}/>
