@@ -1,32 +1,59 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { User, Lock, Bell, Save } from "lucide-react";
+import API from "../../api/axios";
+import { toast } from "react-toastify";
 
 const AdminSettings = () => {
   const [loading, setLoading] = useState(false);
 
   const [profile, setProfile] = useState({
-    name: "Admin User",
-    email: "admin@example.com",
-    phone: "9876543210",
+    name: "",
+    email: "",
+    phone: "",
   });
 
   const [password, setPassword] = useState({
     current: "",
     new: "",
-    confirm: "",
   });
 
-  const [preferences, setPreferences] = useState({
-    notifications: true,
-    theme: "light",
-  });
 
-  const handleSave = async () => {
-    setLoading(true);
-    setTimeout(() => {
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  const fetchProfile = async () => {
+    try {
+      const { data } = await API.get("/auth/admin/me");
+      setProfile(data.data);
+    } catch (error) {
+      toast.error("Failed to load profile");
+    }
+  };
+
+  const handleChangePassword = async () => {
+    if (!password.current || !password.new ) {
+      return toast.error("All password fields are required");
+    }
+
+
+    try {
+      setLoading(true);
+
+      await API.patch("/admin/change-password", {
+        oldPassword: password.current,
+        newPassword: password.new,
+      });
+
+      toast.success("Password updated successfully");
+      setPassword({ current: "", new: "" });
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Password update failed"
+      );
+    } finally {
       setLoading(false);
-      alert("Settings updated");
-    }, 1000);
+    }
   };
 
   return (
@@ -34,32 +61,14 @@ const AdminSettings = () => {
       <div className="max-w-5xl mx-auto space-y-6">
         <h1 className="text-2xl font-semibold text-gray-900">Settings</h1>
 
-       
+        
         <Card title="Profile" icon={<User size={18} />}>
-          <Input
-            label="Name"
-            value={profile.name}
-            onChange={(e) =>
-              setProfile({ ...profile, name: e.target.value })
-            }
-          />
-          <Input
-            label="Email"
-            value={profile.email}
-            onChange={(e) =>
-              setProfile({ ...profile, email: e.target.value })
-            }
-          />
-          <Input
-            label="Phone"
-            value={profile.phone}
-            onChange={(e) =>
-              setProfile({ ...profile, phone: e.target.value })
-            }
-          />
+          <ReadOnly label="Name" value={profile.name} />
+          <ReadOnly label="Email" value={profile.email} />
+          <ReadOnly label="Phone" value={profile.phone || "-"} />
         </Card>
 
-        
+       
         <Card title="Change Password" icon={<Lock size={18} />}>
           <Input
             type="password"
@@ -77,53 +86,23 @@ const AdminSettings = () => {
               setPassword({ ...password, new: e.target.value })
             }
           />
-          <Input
-            type="password"
-            label="Confirm Password"
-            value={password.confirm}
-            onChange={(e) =>
-              setPassword({ ...password, confirm: e.target.value })
-            }
-          />
-        </Card>
 
-        
-        <Card title="Preferences" icon={<Bell size={18} />}>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-medium text-gray-900">Notifications</p>
-              <p className="text-sm text-gray-500">
-                Receive system notifications
-              </p>
-            </div>
-            <Toggle
-              checked={preferences.notifications}
-              onChange={() =>
-                setPreferences({
-                  ...preferences,
-                  notifications: !preferences.notifications,
-                })
-              }
-            />
+          <div className="flex justify-end pt-2">
+            <button
+              onClick={handleChangePassword}
+              disabled={loading}
+              className={`flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-medium transition
+                ${
+                  loading
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-emerald-600 hover:bg-emerald-700 text-white"
+                }`}
+            >
+              <Save size={16} />
+              {loading ? "Updating..." : "Update Password"}
+            </button>
           </div>
         </Card>
-
-        {/* Save */}
-        <div className="flex justify-end">
-          <button
-            onClick={handleSave}
-            disabled={loading}
-            className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition
-              ${
-                loading
-                  ? "bg-gray-300 cursor-not-allowed"
-                  : "bg-emerald-600 hover:bg-emerald-700 text-white"
-              }`}
-          >
-            <Save size={16} />
-            {loading ? "Saving..." : "Save Changes"}
-          </button>
-        </div>
       </div>
     </div>
   );
@@ -151,17 +130,15 @@ const Input = ({ label, type = "text", value, onChange }) => (
   </div>
 );
 
-const Toggle = ({ checked, onChange }) => (
-  <button
-    onClick={onChange}
-    className={`w-10 h-5 flex items-center rounded-full p-1 transition
-      ${checked ? "bg-emerald-600" : "bg-gray-300"}`}
-  >
-    <span
-      className={`bg-white w-4 h-4 rounded-full transform transition
-        ${checked ? "translate-x-5" : "translate-x-0"}`}
+const ReadOnly = ({ label, value }) => (
+  <div className="space-y-1">
+    <label className="text-sm font-medium text-gray-700">{label}</label>
+    <input
+      value={value}
+      disabled
+      className="w-full bg-gray-100 border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-700 cursor-not-allowed"
     />
-  </button>
+  </div>
 );
 
 export default AdminSettings;

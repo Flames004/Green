@@ -3,11 +3,16 @@ import FilterSection from "../components/FilterSection";
 import PlantSection from "../components/ProductSection";
 import { LayoutGrid } from "lucide-react";
 import API from "../api/axios";
+import { useSearchParams } from "react-router-dom";
 
 const Plants = () => {
+  
+  const [searchParams] = useSearchParams();
   const [plants, setPlants] = useState([]);
+
+  const categoryFromURL = searchParams.get("category");
   const [filters, setFilters] = useState({
-    category: "",
+    category: categoryFromURL || "",
     price: 2000,
     size: "",
   });
@@ -22,7 +27,7 @@ const Plants = () => {
         params: {
           ...filters,
           page,
-          limit: 9,
+          limit: 12,
         },
       });
 
@@ -38,7 +43,7 @@ const Plants = () => {
 
   useEffect(() => {
     fetchPlants();
-  }, [page, filters]);
+  }, [filters, page]);
 
   return (
     <div className="min-h-screen bg-gray-100/30">

@@ -8,7 +8,7 @@ const categories = [
     subtitle: "Perfect for your home",
     description: "Low light, easy care plants",
     image: "/indooor.webp",
-    link: "/plants?category=Indoor",
+    link: "/plants?category=indoor",
     count: "45+"
   },
   {
@@ -24,7 +24,7 @@ const categories = [
     subtitle: "Colorful Blooms",
     description: "Seasonal flowers & blossoms",
     image: "/flowers.webp",
-    link: "/plants?category=Flowers",
+    link: "/plants?category=flower",
     count: "28+"
   },
   {

@@ -168,12 +168,7 @@ const TestimonialsSection = () => {
           ))}
         </div>
 
-        {/* View All Reviews Button */}
-        <div className="text-center mt-8">
-          <button className="bg-emerald-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-emerald-700 transition-colors duration-300">
-            View All Reviews
-          </button>
-        </div>
+       
       </div>
     </section>
   );

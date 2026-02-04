@@ -12,7 +12,7 @@ const FeaturedSection = () => {
   const AllPlants = async () => {
     try {
       const { data } = await API.get(
-        "/products/all/plants?featured=true&available=true&limit=9",
+        "/products/all/plants?featured=true&available=true&limit=8",
       );
       setPlants(data.data.docs);
     } catch (error) {

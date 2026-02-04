@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import ProductCard from './ProductCard';
-import API from '../api/axios';
+import React, { useEffect, useState } from "react";
+import ProductCard from "./ProductCard";
+import API from "../api/axios";
 import { toast } from "react-toastify";
-import { Loader } from './Loader';
-import { Link } from 'react-router-dom';
-import { Sun, Droplets, TreePine } from 'lucide-react';
+import { Loader } from "./Loader";
+import { Link } from "react-router-dom";
+import { Sun, Droplets, TreePine } from "lucide-react";
 
 const OutdoorPlantsSection = () => {
   const [plants, setPlants] = useState([]);
@@ -12,11 +12,12 @@ const OutdoorPlantsSection = () => {
 
   const fetchOutdoorPlants = async () => {
     try {
-      const { data } = await API.get("/products/all/plants?category=Outdoor&available=true&limit=8");
+      const { data } = await API.get(
+        "/products/all/plants?category=Outdoor&available=true&limit=8"
+      );
       setPlants(data.data.docs);
     } catch (error) {
       toast.error("Server Error");
-      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -28,42 +29,27 @@ const OutdoorPlantsSection = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center py-20">
+      <div className="flex justify-center items-center py-24 bg-[#f6f7f4]">
         <Loader />
       </div>
     );
   }
 
   return (
-    <section className="py-12 md:py-16 px-4 md:px-10 bg-gradient-to-br from-green-50 to-emerald-50">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-medium text-gray-900 mb-3">
-            Outdoor Plants Collection
+    <section className="bg-[#f8f9f6] border-t border-gray-200">
+      <div className="max-w-7xl mx-auto px-4 md:px-10 py-6 ">
+
+        <div className="text-center max-w-2xl mx-auto mb-6">
+
+          <h2 className="mt-1 text-2xl md:text-4xl font-semibold text-gray-900 leading-tight">
+            Outdoor Collections
           </h2>
-          <p className="text-gray-600 text-sm md:text-lg">
-            Hardy plants perfect for your garden and balcony
+
+          <p className="mt-2 text-sm md:text-base text-gray-600">
+            Carefully selected plants built to handle sunlight, weather, and open environments with ease.
           </p>
         </div>
 
-        {/* Features Strip */}
-        <div className="flex flex-wrap justify-center gap-6 md:gap-12 mb-10">
-          <div className="flex items-center gap-2">
-            <Sun className="text-yellow-500" size={24} />
-            <span className="text-sm md:text-base font-medium text-gray-700">Sun Loving</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Droplets className="text-blue-500" size={24} />
-            <span className="text-sm md:text-base font-medium text-gray-700">Low Maintenance</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <TreePine className="text-green-600" size={24} />
-            <span className="text-sm md:text-base font-medium text-gray-700">Weather Hardy</span>
-          </div>
-        </div>
-
-        {/* Products Grid */}
         {plants.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6">
             {plants.map((plant) => (
@@ -71,15 +57,14 @@ const OutdoorPlantsSection = () => {
             ))}
           </div>
         ) : (
-          <div className="text-center py-12">
-            <p className="text-gray-500">No outdoor plants available at the moment</p>
+          <div className="py-16 text-center text-gray-500">
+            No outdoor plants available at the moment
           </div>
         )}
 
-        {/* View All Button */}
-        <div className="text-center mt-10">
+        <div className="mt-12 md:mt-16 flex justify-center">
           <Link to="/plants?category=Outdoor">
-            <button className="bg-emerald-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-emerald-700 transition-colors shadow-md">
+            <button className="border-2 border-emerald-600 text-emerald-600 px-8 py-2 rounded-lg font-semibold hover:bg-emerald-600 hover:text-white transition-colors">
               View All Outdoor Plants
             </button>
           </Link>

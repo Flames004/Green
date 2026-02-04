@@ -35,20 +35,20 @@ const FeaturedPotSection = () => {
   }
 
   return (
-    <section className="py-12 md:py-16 px-4 md:px-10 bg-white">
+    <section className="py-8 px-4 md:px-10 bg-white border-b border-gray-100">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-medium text-gray-900 mb-3">
+        <div className="text-center mb-5">
+          <h2 className="text-3xl md:text-4xl font-medium text-gray-900 mb-1">
             Ceramic Flowering Pots
           </h2>
-          <p className="text-gray-600 text-sm md:text-lg">
+          <p className="text-gray-600 text-sm md:text-md">
             Artisan-designed pots to complement your beautiful plants
           </p>
         </div>
 
         {/* Features Strip */}
-        <div className="flex flex-wrap justify-center gap-6 md:gap-12 mb-10">
+        <div className="flex flex-wrap justify-center gap-6 md:gap-20 mb-10">
           <div className="flex items-center gap-2">
             <Palette className="text-amber-500" size={24} />
             <span className="text-sm md:text-base font-medium text-gray-700">Unique Designs</span>
