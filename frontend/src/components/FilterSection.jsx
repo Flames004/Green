@@ -77,9 +77,9 @@ const FilterSection = ({ filters, setFilters, setPage }) => {
     filters.price !== 2000;
 
   return (
-    <div className="h-[calc(100vh-300px)] overflow-y-auto pr-2">
+    <div className="h-full overflow-y-auto pr-2">
       {/* Header with Clear All */}
-      <div className="flex items-center justify-between mb-4 sticky top-0 bg-white pb-2 z-10">
+      <div className="flex items-center justify-between mb-3 sticky top-0 bg-white pb-2 z-10">
         <h1 className="text-lg font-semibold">Filters</h1>
         {hasActiveFilters && (
           <button
@@ -176,7 +176,7 @@ const FilterSection = ({ filters, setFilters, setPage }) => {
       <hr className="text-gray-400 mb-5" />
 
       {/* Size Filter */}
-      <div className="mb-6">
+      <div className="mb-4">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-semibold">
             Size
