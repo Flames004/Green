@@ -3,10 +3,44 @@ import { X } from "lucide-react";
 
 const FilterSection = ({ filters, setFilters, setPage }) => {
 
-  const handleChange = (field, value) => {
+  const handleCategoryChange = (category) => {
+    setFilters(prev => {
+      const currentCategories = Array.isArray(prev.category) 
+        ? prev.category 
+        : prev.category ? [prev.category] : [];
+      const isSelected = currentCategories.includes(category);
+      
+      return {
+        ...prev,
+        category: isSelected
+          ? currentCategories.filter(cat => cat !== category)
+          : [...currentCategories, category]
+      };
+    });
+    setPage(1);
+  };
+
+  const handleSizeChange = (size) => {
+    setFilters(prev => {
+      const currentSizes = Array.isArray(prev.size) 
+        ? prev.size 
+        : prev.size ? [prev.size] : [];
+      const isSelected = currentSizes.includes(size);
+      
+      return {
+        ...prev,
+        size: isSelected
+          ? currentSizes.filter(s => s !== size)
+          : [...currentSizes, size]
+      };
+    });
+    setPage(1);
+  };
+
+  const handlePriceChange = (value) => {
     setFilters(prev => ({
       ...prev,
-      [field]: value
+      price: value
     }));
     setPage(1);
   };
@@ -14,21 +48,33 @@ const FilterSection = ({ filters, setFilters, setPage }) => {
   const clearFilter = (field) => {
     setFilters(prev => ({
       ...prev,
-      [field]: field === "price" ? 2000 : ""
+      [field]: field === "price" ? 2000 : []
     }));
     setPage(1);
   };
 
   const clearAllFilters = () => {
     setFilters({
-      category: "",
+      category: [],
       price: 2000,
-      size: "",
+      size: [],
     });
     setPage(1);
   };
 
-  const hasActiveFilters = filters.category !== "" || filters.size !== "" || filters.price !== 2000;
+  // Normalize filters to arrays for display
+  const categoryArray = Array.isArray(filters.category) 
+    ? filters.category 
+    : filters.category ? [filters.category] : [];
+  
+  const sizeArray = Array.isArray(filters.size) 
+    ? filters.size 
+    : filters.size ? [filters.size] : [];
+
+  const hasActiveFilters = 
+    categoryArray.length > 0 || 
+    sizeArray.length > 0 || 
+    filters.price !== 2000;
 
   return (
     <div className="h-[calc(100vh-300px)] overflow-y-auto pr-2">
@@ -50,8 +96,15 @@ const FilterSection = ({ filters, setFilters, setPage }) => {
       {/* Category Filter */}
       <div className="mb-6">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-semibold">Category</h2>
-          {filters.category && (
+          <h2 className="text-sm font-semibold">
+            Category
+            {categoryArray.length > 0 && (
+              <span className="ml-2 text-xs text-emerald-600 font-normal">
+                ({categoryArray.length} selected)
+              </span>
+            )}
+          </h2>
+          {categoryArray.length > 0 && (
             <button
               onClick={() => clearFilter("category")}
               className="text-xs text-gray-500 hover:text-emerald-600"
@@ -66,7 +119,7 @@ const FilterSection = ({ filters, setFilters, setPage }) => {
             <label
               key={cat}
               className={`flex items-center gap-3 cursor-pointer p-2 rounded-lg transition-colors ${
-                filters.category === cat
+                categoryArray.includes(cat)
                   ? "bg-emerald-50 text-emerald-700"
                   : "hover:bg-gray-50"
               }`}
@@ -74,14 +127,8 @@ const FilterSection = ({ filters, setFilters, setPage }) => {
               <input
                 type="checkbox"
                 className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500"
-                checked={filters.category === cat}
-                onChange={e => {
-                  if (e.target.checked) {
-                    handleChange("category", cat);
-                  } else {
-                    clearFilter("category");
-                  }
-                }}
+                checked={categoryArray.includes(cat)}
+                onChange={() => handleCategoryChange(cat)}
               />
               <span className="text-sm">{cat}</span>
             </label>
@@ -113,7 +160,7 @@ const FilterSection = ({ filters, setFilters, setPage }) => {
             max={2000}
             step={50}
             value={filters.price}
-            onChange={e => handleChange("price", Number(e.target.value))}
+            onChange={e => handlePriceChange(Number(e.target.value))}
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-emerald-600"
           />
           <div className="flex items-center justify-between text-xs text-gray-600">
@@ -131,8 +178,15 @@ const FilterSection = ({ filters, setFilters, setPage }) => {
       {/* Size Filter */}
       <div className="mb-6">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-semibold">Size</h2>
-          {filters.size && (
+          <h2 className="text-sm font-semibold">
+            Size
+            {sizeArray.length > 0 && (
+              <span className="ml-2 text-xs text-emerald-600 font-normal">
+                ({sizeArray.length} selected)
+              </span>
+            )}
+          </h2>
+          {sizeArray.length > 0 && (
             <button
               onClick={() => clearFilter("size")}
               className="text-xs text-gray-500 hover:text-emerald-600"
@@ -147,7 +201,7 @@ const FilterSection = ({ filters, setFilters, setPage }) => {
             <label
               key={size}
               className={`flex items-center gap-3 cursor-pointer p-2 rounded-lg transition-colors capitalize ${
-                filters.size === size
+                sizeArray.includes(size)
                   ? "bg-emerald-50 text-emerald-700"
                   : "hover:bg-gray-50"
               }`}
@@ -155,14 +209,8 @@ const FilterSection = ({ filters, setFilters, setPage }) => {
               <input
                 type="checkbox"
                 className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500"
-                checked={filters.size === size}
-                onChange={e => {
-                  if (e.target.checked) {
-                    handleChange("size", size);
-                  } else {
-                    clearFilter("size");
-                  }
-                }}
+                checked={sizeArray.includes(size)}
+                onChange={() => handleSizeChange(size)}
               />
               <span className="text-sm">{size}</span>
             </label>
@@ -171,33 +219,39 @@ const FilterSection = ({ filters, setFilters, setPage }) => {
       </div>
 
       {/* Active Filters Summary */}
-      {/* {hasActiveFilters && (
-        <div className="mt-6 p-3 bg-emerald-50 rounded-lg">
+      {hasActiveFilters && (
+        <div className="mt-6 p-3 bg-emerald-50 rounded-lg border border-emerald-100">
           <p className="text-xs font-semibold text-emerald-700 mb-2">Active Filters:</p>
           <div className="flex flex-wrap gap-2">
-            {filters.category && (
-              <span className="inline-flex items-center gap-1 bg-white px-2 py-1 rounded text-xs">
-                {filters.category}
+            {categoryArray.map(cat => (
+              <span 
+                key={cat}
+                className="inline-flex items-center gap-1 bg-white px-2 py-1 rounded text-xs border border-emerald-200"
+              >
+                {cat}
                 <X
                   size={12}
                   className="cursor-pointer hover:text-red-500"
-                  onClick={() => clearFilter("category")}
+                  onClick={() => handleCategoryChange(cat)}
                 />
               </span>
-            )}
-            {filters.size && (
-              <span className="inline-flex items-center gap-1 bg-white px-2 py-1 rounded text-xs capitalize">
-                {filters.size}
+            ))}
+            {sizeArray.map(size => (
+              <span 
+                key={size}
+                className="inline-flex items-center gap-1 bg-white px-2 py-1 rounded text-xs capitalize border border-emerald-200"
+              >
+                {size}
                 <X
                   size={12}
                   className="cursor-pointer hover:text-red-500"
-                  onClick={() => clearFilter("size")}
+                  onClick={() => handleSizeChange(size)}
                 />
               </span>
-            )}
+            ))}
             {filters.price !== 2000 && (
-              <span className="inline-flex items-center gap-1 bg-white px-2 py-1 rounded text-xs">
-                ₹{filters.price}
+              <span className="inline-flex items-center gap-1 bg-white px-2 py-1 rounded text-xs border border-emerald-200">
+                Up to ₹{filters.price}
                 <X
                   size={12}
                   className="cursor-pointer hover:text-red-500"
@@ -207,7 +261,7 @@ const FilterSection = ({ filters, setFilters, setPage }) => {
             )}
           </div>
         </div>
-      )} */}
+      )}
     </div>
   );
 };
