@@ -24,9 +24,31 @@ const Plants = () => {
 
   const fetchPlants = async () => {
     try {
+      // Format filters for API
+      const apiFilters = {};
+      
+      // Handle category - join array with | for regex OR matching
+      if (Array.isArray(filters.category) && filters.category.length > 0) {
+        apiFilters.category = filters.category.join('|');
+      } else if (filters.category) {
+        apiFilters.category = filters.category;
+      }
+      
+      // Handle size - join array with | for regex OR matching
+      if (Array.isArray(filters.size) && filters.size.length > 0) {
+        apiFilters.size = filters.size.join('|');
+      } else if (filters.size) {
+        apiFilters.size = filters.size;
+      }
+      
+      // Handle price
+      if (filters.price && filters.price !== 2000) {
+        apiFilters.price = filters.price;
+      }
+
       const { data } = await API.get(`/products/all/plants`, {
         params: {
-          ...filters,
+          ...apiFilters,
           page,
           limit: 12,
         },
