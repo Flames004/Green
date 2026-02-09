@@ -77,21 +77,41 @@ const FilterSection = ({ filters, setFilters, setPage, isMobile = false }) => {
     filters.price !== 2000;
 
   return (
-    <div className={isMobile ? "max-h-[70vh] overflow-y-auto" : "h-fit max-h-[calc(100vh-200px)] overflow-y-auto pr-2"}>
-      {/* Header with Clear All */}
-      <div className={`flex items-center justify-between mb-4 ${!isMobile && 'sticky top-0 bg-white pb-2 z-10'}`}>
-        <h1 className="text-base md:text-lg font-semibold">Filters</h1>
-        {hasActiveFilters && (
-          <button
-            onClick={clearAllFilters}
-            className="text-xs text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-1"
-          >
-            <X size={14} />
-            Clear All
-          </button>
-        )}
-      </div>
-      <hr className="text-gray-400 mb-4" />
+    <div className={isMobile ? "max-h-[70vh] overflow-y-auto" : "h-fit max-h-[calc(100vh-200px)] overflow-y-auto lg:pr-2"}>
+      {/* Header with Clear All - Only show on desktop */}
+      {!isMobile && (
+        <>
+          <div className="flex items-center justify-between mb-4 sticky top-0 bg-white pb-2 z-10">
+            <h1 className="text-base md:text-lg font-semibold">Filters</h1>
+            {hasActiveFilters && (
+              <button
+                onClick={clearAllFilters}
+                className="text-xs text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-1"
+              >
+                <X size={14} />
+                Clear All
+              </button>
+            )}
+          </div>
+          <hr className="text-gray-400 mb-4" />
+        </>
+      )}
+
+      {/* Mobile - Only Clear All button */}
+      {isMobile && hasActiveFilters && (
+        <>
+          <div className="flex items-center justify-end mb-4">
+            <button
+              onClick={clearAllFilters}
+              className="text-xs text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-1"
+            >
+              <X size={14} />
+              Clear All
+            </button>
+          </div>
+          <hr className="text-gray-400 mb-4" />
+        </>
+      )}
 
       {/* Category Filter */}
       <div className="mb-5">

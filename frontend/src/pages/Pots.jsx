@@ -20,9 +20,38 @@ const Pots = () => {
 
   const fetchPots = async () => {
     try {
+      // Format filters for API
+      const apiFilters = {};
+      
+      // Handle shape - join array with | for regex OR matching
+      if (Array.isArray(filters.shape) && filters.shape.length > 0) {
+        apiFilters.shape = filters.shape.join('|');
+      } else if (filters.shape) {
+        apiFilters.shape = filters.shape;
+      }
+      
+      // Handle material - join array with | for regex OR matching
+      if (Array.isArray(filters.material) && filters.material.length > 0) {
+        apiFilters.material = filters.material.join('|');
+      } else if (filters.material) {
+        apiFilters.material = filters.material;
+      }
+      
+      // Handle size - join array with | for regex OR matching
+      if (Array.isArray(filters.size) && filters.size.length > 0) {
+        apiFilters.size = filters.size.join('|');
+      } else if (filters.size) {
+        apiFilters.size = filters.size;
+      }
+      
+      // Handle price
+      if (filters.price && filters.price !== 2000) {
+        apiFilters.price = filters.price;
+      }
+
       const { data } = await API.get(`/products/all/pots`, {
         params: {
-          ...filters,
+          ...apiFilters,
           page,
           limit: 9,
         },
