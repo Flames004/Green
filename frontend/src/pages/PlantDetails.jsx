@@ -202,6 +202,10 @@ const PlantDetails = () => {
       <div className="mt-12">
         <ReviewsSection productId={plant._id} />
       </div>
+
+      <div className="mt-10">
+        <h1>Recent Viewed Products</h1>
+      </div>
     </div>
   );
 };

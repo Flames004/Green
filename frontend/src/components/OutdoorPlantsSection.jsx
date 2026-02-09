@@ -37,7 +37,7 @@ const OutdoorPlantsSection = () => {
 
   return (
     <section className="bg-[#f8f9f6] border-t border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 md:px-10 py-6 ">
+      <div className="max-w-7xl mx-auto px-4 md:px-10 py-2 ">
 
         <div className="text-center max-w-2xl mx-auto mb-6">
 

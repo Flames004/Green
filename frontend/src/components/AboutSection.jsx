@@ -102,11 +102,11 @@ const AboutSection = () => {
               </p>
               <div className="flex items-center gap-2 md:gap-3">
                 <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-emerald-600 flex items-center justify-center text-white font-semibold text-sm">
-                  SP
+                  PS
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-900 text-xs md:text-sm">Sarah Patel</p>
-                  <p className="text-[10px] md:text-xs text-gray-600">Plant Enthusiast, Mumbai</p>
+                  <p className="font-semibold text-gray-900 text-xs md:text-sm">Parshant Saini</p>
+                  <p className="text-[10px] md:text-xs text-gray-600">Plant Enthusiast, Saharanpur</p>
                 </div>
               </div>
             </div>

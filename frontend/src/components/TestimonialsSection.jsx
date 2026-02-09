@@ -7,7 +7,7 @@ const testimonials = [
     id: 1,
     name: "Priya Sharma",
     location: "Mumbai",
-    rating: 5,
+    rating: 4,
     text: "The plants arrived in perfect condition! The packaging was excellent and the quality exceeded my expectations. My indoor snake plant is thriving!",
     purchaseInfo: "Bought 3 plants"
   },
@@ -15,7 +15,7 @@ const testimonials = [
     id: 2,
     name: "Rajesh Kumar",
     location: "Bangalore",
-    rating: 5,
+    rating: 4,
     text: "Amazing collection of pots! The ceramic pots are beautifully handcrafted. Customer service was very helpful in choosing the right plants for my balcony.",
     purchaseInfo: "Bought 2 pots & 4 plants"
   },
@@ -31,7 +31,7 @@ const testimonials = [
     id: 4,
     name: "Vikram Singh",
     location: "Pune",
-    rating: 5,
+    rating: 3,
     text: "Excellent service and beautiful plants! Ordered succulents for my office desk and they look amazing. The delivery was quick and hassle-free.",
     purchaseInfo: "Bought 6 succulents"
   },
@@ -47,7 +47,7 @@ const testimonials = [
     id: 6,
     name: "Arjun Reddy",
     location: "Hyderabad",
-    rating: 5,
+    rating: 4,
     text: "Outstanding quality! The flowering plants I ordered are blooming beautifully. Fast delivery and secure packaging. Will definitely order again!",
     purchaseInfo: "Bought 8 plants & 3 pots"
   }
@@ -100,10 +100,10 @@ const TestimonialsSection = () => {
                 />
               ))}
             </div>
-            <span className="text-lg font-semibold text-gray-900">4.8</span>
+            <span className="text-lg font-semibold text-gray-900">4.1</span>
             <span className="text-gray-500">out of 5</span>
           </div>
-          <p className="text-sm text-gray-500 mt-1">(2,340+ verified reviews)</p>
+          <p className="text-sm text-gray-500 mt-1">(verified reviews)</p>
         </div>
 
         {/* Scrolling Testimonials */}
